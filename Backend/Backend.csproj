@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>..\Frontend\</SpaRoot>
+    <SpaPublished>SPA\</SpaPublished>
+    <SpaBuildSubfolder>build</SpaBuildSubfolder>
+    <SpaDistBuild>dist/$(SpaBuildSubfolder)</SpaDistBuild>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <Target Name="paramset" AfterTargets="BeforeBuild">
+    <ItemGroup>
+      <AssemblyAttributes Include="$(RootNamespace).SpaRootAttribute">
+        <_Parameter1>$(SpaRoot)</_Parameter1>
+      </AssemblyAttributes>
+    </ItemGroup>
+    <ItemGroup>
+      <AssemblyAttributes Include="$(RootNamespace).SpaDistBuildAttribute">
+        <_Parameter1>$(SpaDistBuild)</_Parameter1>
+      </AssemblyAttributes>
+    </ItemGroup>
+    <ItemGroup>
+      <AssemblyAttributes Include="$(RootNamespace).SpaPublishedAttribute">
+        <_Parameter1>$(SpaPublished)</_Parameter1>
+      </AssemblyAttributes>
+    </ItemGroup>
+    <WriteCodeFragment AssemblyAttributes="@(AssemblyAttributes)" Language="C#" OutputDirectory="$(IntermediateOutputPath)" OutputFile="SolutionInfo.cs">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.32" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <Target Name="PublishInstallWebpack" BeforeTargets="BeforeBuild;ComputeFilesToPublish">
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="BuildWebpack" BeforeTargets="Build">
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --output-path $(SpaDistBuild)" />
+  </Target>
+
+  <Target Name="PublishBuildWebpack" AfterTargets="ComputeFilesToPublish">
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production --output-path $(SpaDistBuild)" />
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>$(SpaPublished)dist\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties clientapp_4tsconfig_1json__JsonSchema="tsconfig" /></VisualStudio></ProjectExtensions>
+</Project>
