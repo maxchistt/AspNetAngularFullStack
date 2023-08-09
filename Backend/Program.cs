@@ -1,12 +1,9 @@
 using Backend.AngularSpa;
 using Backend.Shared;
 using Backend.Weather;
-using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddCors();
 builder.Services.ConfigAngularStaticFiles();
 builder.Services.AddEndpointsApiExplorer();
@@ -20,10 +17,8 @@ app.MapWeatherForecast("api/weatherforecast")
     .WithName("GetWeatherForecast")
     .WithOpenApi();
 
-app.MapGet("api/SpaDir", () =>
-{
-    return JsonConvert.SerializeObject(AngularConfig.SpaStaticRoot);
-}).WithName("GetSpa")
+app.MapSpaInfo("api/SpaDir")
+    .WithName("GetSpaDir")
     .WithOpenApi();
 
 if (app.Environment.IsDevelopment() || EnvConfig.IsDebug)

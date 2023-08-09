@@ -1,6 +1,6 @@
 ﻿namespace Backend.Weather
 {
-    public static class WeatherForecastExtension
+    public static class WeatherForecastEndpointExt
     {
         private static string[] summaries = new[]
         {
