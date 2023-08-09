@@ -5,12 +5,6 @@ namespace Backend.SpaExtension
 {
     public static class AngularExtension
     {
-
-        public static void AddDevExceptionPage(this WebApplication app)
-        {
-            if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
-        }
-
         public static void AddAngularSpaStatic(this WebApplication app, bool alwaysUseStatic = false)
         {
             if (!app.Environment.IsDevelopment() || alwaysUseStatic)
@@ -19,7 +13,7 @@ namespace Backend.SpaExtension
             }
         }
 
-        public static void AddAngularSpa(this WebApplication app, bool useDevSpaOnDev = true, string? proxy = null)
+        public static void AddAngularSpa(this WebApplication app, bool useDevSpaOnDev = false, string? proxy = null)
         {
             app.UseSpa(spa =>
             {

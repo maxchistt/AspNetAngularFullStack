@@ -1,8 +1,3 @@
-/*#undef BuildFromCode
-#if BuildFromCode
-using Backend.BuildCommands;
-#endif*/
-
 using Backend.SpaConfig;
 using Backend.SpaExtension;
 using Backend.Weather;
@@ -31,23 +26,22 @@ app.MapGet("api/SpaDir", () =>
 }).WithName("GetSpa")
     .WithOpenApi();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || true)
+if (app.Environment.IsDevelopment()
+#if DEBUG
+    || true
+#endif
+)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
-app.AddDevExceptionPage();
-
-//app.UseDefaultFiles();
-//app.UseStaticFiles();
-/*#if BuildFromCode
-app.AngularScriptsPrepare();
-#endif*/
-
-app.AddAngularSpaStatic();
+app.AddAngularSpaStatic(
+#if !DEBUG
+    true
+#endif
+);
 app.AddAngularSpa(false);
-
 
 app.Run();
