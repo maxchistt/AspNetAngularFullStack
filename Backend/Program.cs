@@ -45,7 +45,9 @@ app.AddDevExceptionPage();
 /*#if BuildFromCode
 app.AngularScriptsPrepare();
 #endif*/
-app.AddAngularSpa("http://127.0.0.1:4200/");
+
+app.AddAngularSpaStatic();
+app.AddAngularSpa(false);
 
 
 app.Run();

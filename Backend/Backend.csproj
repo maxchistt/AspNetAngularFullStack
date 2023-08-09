@@ -6,8 +6,7 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>..\Frontend\</SpaRoot>
     <SpaPublished>SPA\</SpaPublished>
-    <SpaBuildSubfolder>build</SpaBuildSubfolder>
-    <SpaDistBuild>dist/$(SpaBuildSubfolder)</SpaDistBuild>
+    <SpaDistBuild>dist/build</SpaDistBuild>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -41,20 +40,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <Target Name="PublishInstallWebpack" BeforeTargets="BeforeBuild;ComputeFilesToPublish">
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-  </Target>
-
-  <Target Name="BuildWebpack" BeforeTargets="Build">
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --output-path $(SpaDistBuild)" />
-  </Target>
-
   <Target Name="PublishBuildWebpack" AfterTargets="ComputeFilesToPublish">
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production --output-path $(SpaDistBuild)" />
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**" />

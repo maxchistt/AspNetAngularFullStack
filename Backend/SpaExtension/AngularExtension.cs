@@ -11,18 +11,22 @@ namespace Backend.SpaExtension
             if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
         }
 
-        public static void AddAngularSpa(this WebApplication app, string? proxy = null)
+        public static void AddAngularSpaStatic(this WebApplication app, bool alwaysUseStatic = false)
         {
-            if (!app.Environment.IsDevelopment())
+            if (!app.Environment.IsDevelopment() || alwaysUseStatic)
             {
                 app.UseSpaStaticFiles();
             }
+        }
+
+        public static void AddAngularSpa(this WebApplication app, bool useDevSpaOnDev = true, string? proxy = null)
+        {
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = AngularConfig.Source;
-                if (app.Environment.IsDevelopment())
+                
+                if (useDevSpaOnDev && app.Environment.IsDevelopment())
                 {
-                    
+                    spa.Options.SourcePath = AngularConfig.Source;
                     if (string.IsNullOrEmpty(proxy))
                     {
                         spa.UseAngularCliServer(npmScript: "start");
