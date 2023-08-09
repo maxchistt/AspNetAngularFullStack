@@ -66,5 +66,5 @@
     </ItemGroup>
   </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties clientapp_4tsconfig_1json__JsonSchema="tsconfig" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

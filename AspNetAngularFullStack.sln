@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.csproj", "{D75B76F1-03A7-4EF5-8735-267502A8E531}"
+	ProjectSection(ProjectDependencies) = postProject
+		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7} = {09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}
+	EndProjectSection
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Frontend", "Frontend\Frontend.esproj", "{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}"
 EndProject
@@ -18,6 +21,7 @@ Global
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

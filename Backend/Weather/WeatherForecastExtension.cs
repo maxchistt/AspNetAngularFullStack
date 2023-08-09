@@ -1,4 +1,6 @@
-﻿namespace Backend.Weather
+﻿using Backend.SpaConfig;
+
+namespace Backend.Weather
 {
     public static class WeatherForecastExtension
     {
@@ -9,6 +11,7 @@
 
         public static RouteHandlerBuilder MapWeatherForecast(this IEndpointRouteBuilder app, string route = "/weatherforecast")
         {
+
             return app.MapGet(route, () =>
             {
                 var forecast = Enumerable.Range(1, 5).Select(index =>

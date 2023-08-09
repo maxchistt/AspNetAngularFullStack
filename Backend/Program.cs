@@ -1,41 +1,51 @@
-#undef BuildFromCode
+/*#undef BuildFromCode
 #if BuildFromCode
 using Backend.BuildCommands;
-#endif
+#endif*/
 
+using Backend.SpaConfig;
 using Backend.SpaExtension;
 using Backend.Weather;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors();
+builder.Services.ConfigAngularStaticFiles();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.ConfigAngularStaticFiles();
 
 var app = builder.Build();
+app.UseRouting();
+app.UseCors(builder => builder.AllowAnyOrigin());
+
+app.MapWeatherForecast("api/weatherforecast")
+    .WithName("GetWeatherForecast")
+    .WithOpenApi();
+
+app.MapGet("api/SpaDir", () =>
+{
+    return JsonConvert.SerializeObject(AngularConfig.SpaStaticRoot);
+}).WithName("GetSpa")
+    .WithOpenApi();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.MapWeatherForecast("/weatherforecast")
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+app.AddDevExceptionPage();
 
 //app.UseDefaultFiles();
 //app.UseStaticFiles();
-
-app.AddDevExceptionPage();
-
-#if BuildFromCode
+/*#if BuildFromCode
 app.AngularScriptsPrepare();
-#endif
+#endif*/
+app.AddAngularSpa("http://127.0.0.1:4200/");
 
-app.AddAngularSpa();
 
 app.Run();

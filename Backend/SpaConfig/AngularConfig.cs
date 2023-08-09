@@ -15,7 +15,7 @@ namespace Backend.SpaConfig
                 ?? throw new ArgumentNullException("SpaRootAttribute is null");
         }
 
-        public static string PublishedSPA
+        public static string PublishedSPAFolderName
         {
             get => Assembly
                 .GetExecutingAssembly()
@@ -87,6 +87,6 @@ namespace Backend.SpaConfig
 
         private static string ClientBuildOutput { get => Source + BuildSubfolder; }
 
-        private static string PublishedSpaStatic { get => PublishedSPA + BuildSubfolder; }
+        private static string PublishedSpaStatic { get => PublishedSPAFolderName + BuildSubfolder; }
     }
 }

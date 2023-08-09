@@ -19,9 +19,10 @@ namespace Backend.SpaExtension
             }
             app.UseSpa(spa =>
             {
+                spa.Options.SourcePath = AngularConfig.Source;
                 if (app.Environment.IsDevelopment())
                 {
-                    spa.Options.SourcePath = AngularConfig.Source;
+                    
                     if (string.IsNullOrEmpty(proxy))
                     {
                         spa.UseAngularCliServer(npmScript: "start");
