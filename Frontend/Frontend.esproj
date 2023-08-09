@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.83-alpha">
   <PropertyGroup>
     <StartupCommand>npm start -- --configuration development --open</StartupCommand>
-    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
     <BuildCommand>npm run build -- --configuration production --output-path dist\build</BuildCommand>
     <ProductionBuildCommand>npm run build -- --configuration production --output-path dist\build</ProductionBuildCommand>
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\build</BuildOutputFolder>
+    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
   </PropertyGroup>
 </Project>
