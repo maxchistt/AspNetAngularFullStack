@@ -9,7 +9,6 @@
 
         public static RouteHandlerBuilder MapWeatherForecast(this IEndpointRouteBuilder app, string route = "/weatherforecast")
         {
-
             return app.MapGet(route, () =>
             {
                 var forecast = Enumerable.Range(1, 5).Select(index =>
@@ -24,5 +23,4 @@
             });
         }
     }
-
 }

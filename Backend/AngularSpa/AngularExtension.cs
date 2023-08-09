@@ -16,7 +16,6 @@ namespace Backend.AngularSpa
         {
             app.UseSpa(spa =>
             {
-
                 if (useDevSpaOnDev && app.Environment.IsDevelopment())
                 {
                     spa.Options.SourcePath = AngularConfig.Source;
