@@ -8,21 +8,22 @@
     <SpaPublished>SPA\</SpaPublished>
     <SpaDistBuild>dist/build</SpaDistBuild>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AngularNamespace>$(RootNamespace).AngularSpa</AngularNamespace>
   </PropertyGroup>
 
   <Target Name="paramset" AfterTargets="BeforeBuild">
     <ItemGroup>
-      <AssemblyAttributes Include="$(RootNamespace).SpaRootAttribute">
+      <AssemblyAttributes Include="$(AngularNamespace).SpaRootAttribute">
         <_Parameter1>$(SpaRoot)</_Parameter1>
       </AssemblyAttributes>
     </ItemGroup>
     <ItemGroup>
-      <AssemblyAttributes Include="$(RootNamespace).SpaDistBuildAttribute">
+      <AssemblyAttributes Include="$(AngularNamespace).SpaDistBuildAttribute">
         <_Parameter1>$(SpaDistBuild)</_Parameter1>
       </AssemblyAttributes>
     </ItemGroup>
     <ItemGroup>
-      <AssemblyAttributes Include="$(RootNamespace).SpaPublishedAttribute">
+      <AssemblyAttributes Include="$(AngularNamespace).SpaPublishedAttribute">
         <_Parameter1>$(SpaPublished)</_Parameter1>
       </AssemblyAttributes>
     </ItemGroup>

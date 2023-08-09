@@ -1,5 +1,5 @@
-using Backend.SpaConfig;
-using Backend.SpaExtension;
+using Backend.AngularSpa;
+using Backend.Shared;
 using Backend.Weather;
 using Newtonsoft.Json;
 
@@ -26,22 +26,14 @@ app.MapGet("api/SpaDir", () =>
 }).WithName("GetSpa")
     .WithOpenApi();
 
-if (app.Environment.IsDevelopment()
-#if DEBUG
-    || true
-#endif
-)
+if (app.Environment.IsDevelopment() || EnvConfig.IsDebug)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
 
-app.AddAngularSpaStatic(
-#if !DEBUG
-    true
-#endif
-);
+app.AddAngularSpaStatic(!EnvConfig.IsDebug);
 app.AddAngularSpa(false);
 
 app.Run();

@@ -1,4 +1,4 @@
-﻿namespace Backend
+﻿namespace Backend.AngularSpa
 {
     [AttributeUsage(AttributeTargets.Assembly)]
     public class SpaRootAttribute : Attribute

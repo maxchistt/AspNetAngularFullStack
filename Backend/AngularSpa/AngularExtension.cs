@@ -1,7 +1,6 @@
-﻿using Backend.SpaConfig;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+﻿using Microsoft.AspNetCore.SpaServices.AngularCli;
 
-namespace Backend.SpaExtension
+namespace Backend.AngularSpa
 {
     public static class AngularExtension
     {
@@ -17,7 +16,7 @@ namespace Backend.SpaExtension
         {
             app.UseSpa(spa =>
             {
-                
+
                 if (useDevSpaOnDev && app.Environment.IsDevelopment())
                 {
                     spa.Options.SourcePath = AngularConfig.Source;

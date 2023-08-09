@@ -1,6 +1,4 @@
-﻿using Backend.SpaConfig;
-
-namespace Backend.Weather
+﻿namespace Backend.Weather
 {
     public static class WeatherForecastExtension
     {

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Backend.SpaConfig
+namespace Backend.AngularSpa
 {
     public static class AngularConfig
     {
