@@ -5,7 +5,7 @@
         public static bool IsDebug
         {
             get =>
-#if !DEBUG
+#if DEBUG
                 true;
 #else
                 false;
