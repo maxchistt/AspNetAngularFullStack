@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 
 namespace Backend.AngularSpa
 {
@@ -8,7 +8,7 @@ namespace Backend.AngularSpa
         {
             return app.MapGet(route, () =>
             {
-                return JsonConvert.SerializeObject(AngularConfig.SpaStaticRoot);
+                return JsonSerializer.Serialize(AngularConfig.SpaStaticRoot);
             });
         }
     }

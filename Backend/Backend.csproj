@@ -5,16 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <!--Params begin-->
     <SpaName>Frontend</SpaName>
     <SpaPublFolderName>SPA</SpaPublFolderName>
     <SpaDistBuildSubFolerName>build</SpaDistBuildSubFolerName>
+    <AngularSubnamespace>AngularSpa</AngularSubnamespace>
+    <!--Params end-->
     <SpaRoot>..\$(SpaName)\</SpaRoot>
     <SpaPublished>$(SpaPublFolderName)\</SpaPublished>
     <SpaDistBuild>dist/$(SpaDistBuildSubFolerName)</SpaDistBuild>
-    <AngularNamespace>$(RootNamespace).AngularSpa</AngularNamespace>
+    <AngularNamespace>$(RootNamespace).$(AngularSubnamespace)</AngularNamespace>
   </PropertyGroup>
 
-  <Target Name="paramset" AfterTargets="BeforeBuild">
+  <!--Setting up assembly attributies-->
+  <Target Name="paramset" AfterTargets="BeforeBuild"> 
     <ItemGroup>
       <AssemblyAttributes Include="$(AngularNamespace).SpaRootAttribute">
         <_Parameter1>$(SpaRoot)</_Parameter1>
@@ -37,12 +41,13 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.9" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <!--On publish-->
   <Target Name="PublishBuildWebpack" AfterTargets="ComputeFilesToPublish">
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production --output-path $(SpaDistBuild)" />
