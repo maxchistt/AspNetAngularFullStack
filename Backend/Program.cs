@@ -28,6 +28,7 @@ app.MapSpaInfo("api/SpaDir")
     .WithName("GetSpaDir")
     .WithOpenApi();
 
+app.UseStaticFiles();
 app.AddAngularSpaStatic(!EnvConfig.IsDebug);
 app.AddAngularSpa(false);
 
