@@ -4,10 +4,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
-    <SpaRoot>..\Frontend\</SpaRoot>
-    <SpaPublished>SPA\</SpaPublished>
-    <SpaDistBuild>dist/build</SpaDistBuild>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <SpaName>Frontend</SpaName>
+    <SpaPublFolderName>SPA</SpaPublFolderName>
+    <SpaDistBuildSubFolerName>build</SpaDistBuildSubFolerName>
+    <SpaRoot>..\$(SpaName)\</SpaRoot>
+    <SpaPublished>$(SpaPublFolderName)\</SpaPublished>
+    <SpaDistBuild>dist/$(SpaDistBuildSubFolerName)</SpaDistBuild>
     <AngularNamespace>$(RootNamespace).AngularSpa</AngularNamespace>
   </PropertyGroup>
 
@@ -35,7 +38,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.32" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
