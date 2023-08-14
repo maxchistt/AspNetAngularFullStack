@@ -31,9 +31,9 @@ WORKDIR "/src/Frontend"
 RUN npm install
 #COPY . .
 COPY ["Frontend/","."]
-RUN npm run build -- --configuration production --output-path /app/publish/SPA/dist/build
 
 FROM node_install as node_build
+RUN npm run build -- --configuration production --output-path /app/publish/SPA/dist/build
 
 FROM base AS final
 WORKDIR /app
