@@ -7,7 +7,7 @@
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public static RouteHandlerBuilder MapWeatherForecast(this IEndpointRouteBuilder app, string route = "/weatherforecast")
+        public static RouteHandlerBuilder MapWeatherForecast(this WebApplication app, string route = "/weatherforecast")
         {
             return app.MapGet(route, () =>
             {

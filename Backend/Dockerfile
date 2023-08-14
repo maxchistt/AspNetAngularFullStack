@@ -9,25 +9,34 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS net_restore
 WORKDIR /src
-COPY ["Backend/Backend.csproj", "Backend/"]
-# Install NodeJs
-#RUN apt-get update && \
-#apt-get install -y wget && \
-#apt-get install -y gnupg2 && \
-RUN wget -qO- https://deb.nodesource.com/setup_20.x | bash - && \
-apt-get install -y build-essential nodejs
-# End Install
-RUN dotnet restore "Backend/Backend.csproj"
-COPY . .
+COPY ["Backend/Backend.csproj","Backend/"]
 WORKDIR "/src/Backend"
+RUN dotnet restore "Backend.csproj"
+#COPY . .
+COPY ["Backend/","."]
+
+FROM net_restore AS net_build
 RUN dotnet build "Backend.csproj" -c Release -o /app/build
 
-FROM build AS publish
+FROM net_build AS net_publish
 RUN dotnet publish "Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM node:latest as node_install
+WORKDIR /src
+COPY ["Frontend/package.json","Frontend/"] 
+COPY ["Frontend/package-lock.json","Frontend/"] 
+WORKDIR "/src/Frontend"
+RUN npm install
+#COPY . .
+COPY ["Frontend/","."]
+RUN npm run build -- --configuration production --output-path /app/publish/SPA/dist/build
+
+FROM node_install as node_build
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=net_publish /app/publish .
+COPY --from=node_build /app/publish .
 ENTRYPOINT ["dotnet", "Backend.dll", "--environment=Production"]

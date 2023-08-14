@@ -5,61 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <!--Params begin-->
-    <SpaName>Frontend</SpaName>
-    <SpaPublFolderName>SPA</SpaPublFolderName>
-    <SpaDistBuildSubFolerName>build</SpaDistBuildSubFolerName>
-    <AngularSubnamespace>AngularSpa</AngularSubnamespace>
-    <!--Params end-->
-    <SpaRoot>..\$(SpaName)\</SpaRoot>
-    <SpaPublished>$(SpaPublFolderName)\</SpaPublished>
-    <SpaDistBuild>dist/$(SpaDistBuildSubFolerName)</SpaDistBuild>
-    <AngularNamespace>$(RootNamespace).$(AngularSubnamespace)</AngularNamespace>
   </PropertyGroup>
-
-  <!--Setting up assembly attributies-->
-  <Target Name="paramset" AfterTargets="BeforeBuild"> 
-    <ItemGroup>
-      <AssemblyAttributes Include="$(AngularNamespace).SpaRootAttribute">
-        <_Parameter1>$(SpaRoot)</_Parameter1>
-      </AssemblyAttributes>
-    </ItemGroup>
-    <ItemGroup>
-      <AssemblyAttributes Include="$(AngularNamespace).SpaDistBuildAttribute">
-        <_Parameter1>$(SpaDistBuild)</_Parameter1>
-      </AssemblyAttributes>
-    </ItemGroup>
-    <ItemGroup>
-      <AssemblyAttributes Include="$(AngularNamespace).SpaPublishedAttribute">
-        <_Parameter1>$(SpaPublished)</_Parameter1>
-      </AssemblyAttributes>
-    </ItemGroup>
-    <WriteCodeFragment AssemblyAttributes="@(AssemblyAttributes)" Language="C#" OutputDirectory="$(IntermediateOutputPath)" OutputFile="SolutionInfo.cs">
-      <Output TaskParameter="OutputFile" ItemName="Compile" />
-      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
-    </WriteCodeFragment>
-  </Target>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
-
-  <!--On publish-->
-  <Target Name="PublishBuildWebpack" AfterTargets="ComputeFilesToPublish">
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production --output-path $(SpaDistBuild)" />
-    <ItemGroup>
-      <DistFiles Include="$(SpaRoot)dist\**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-        <RelativePath>$(SpaPublished)dist\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      </ResolvedFileToPublish>
-    </ItemGroup>
-  </Target>
-
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

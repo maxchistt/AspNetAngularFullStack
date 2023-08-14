@@ -4,7 +4,7 @@ namespace Backend.AngularSpa
 {
     public static class SpaInfoEndpointExt
     {
-        public static RouteHandlerBuilder MapSpaInfo(this IEndpointRouteBuilder app, string route = "/SpaDir")
+        public static RouteHandlerBuilder MapSpaInfo(this WebApplication app, string route = "/SpaDir")
         {
             return app.MapGet(route, () =>
             {

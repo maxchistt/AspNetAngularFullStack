@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using Backend.Shared;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Backend.AngularSpa
 {
@@ -6,43 +9,30 @@ namespace Backend.AngularSpa
     {
         public static string Source
         {
-            get => Assembly
-                .GetExecutingAssembly()
-                .GetCustomAttribute<SpaRootAttribute>()
-                ?.Value
-                .Replace("\\", "/")
-                .TrimEnd('/')
-                ?? throw new ArgumentNullException("SpaRootAttribute is null");
+            get => "../Frontend/";
         }
 
         public static string PublishedSPAFolderName
         {
-            get => Assembly
-                .GetExecutingAssembly()
-                .GetCustomAttribute<SpaPublishedAttribute>()
-                ?.Value
-                .Replace("\\", "/")
-                .TrimEnd('/')
-                ?? throw new ArgumentNullException("SpaPublishedAttribute is null");
+            get => "SPA/";
         }
 
-        private static string BuildSubfolder
+        private static string SpaBuildSubfolder
         {
-            get => Assembly
-                .GetExecutingAssembly()
-                .GetCustomAttribute<SpaDistBuildAttribute>()
-                ?.Value
-                .Replace("\\", "/")
-                .TrimEnd('/')
-                .TrimStart('/')
-                .Insert(0, "/")
-                ?? throw new ArgumentNullException("SpaRootAttribute is null");
+            get => "dist/build";
         }
 
         private static string? tryFindOutput()
         {
             var outputSubdir = "/" + ClientBuildOutput.Replace("\\", "/");
             var curDir = Directory.GetCurrentDirectory().Replace("\\", "/");
+
+            if (EnvConfig.IsDebug)
+            {
+                var d = JsonConvert.SerializeObject(Subdirs(curDir), Formatting.Indented);
+                Console.WriteLine(d);
+                Debug.WriteLine(d);
+            }
 
             if (Directory.Exists(curDir + outputSubdir))
                 return ClientBuildOutput;
@@ -55,6 +45,11 @@ namespace Backend.AngularSpa
             var publishSubdir = "/" + PublishedSpaStatic.Replace("\\", "/");
             var asmDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)?.Replace("\\", "/");
             var asmDirRelease = asmDir?.Replace("Debug", "Release");
+
+            var d = JsonConvert.SerializeObject(Subdirs(asmDir ?? throw new DirectoryNotFoundException("No Assembly dir")), Formatting.Indented);
+
+            Console.WriteLine(d);
+            Debug.WriteLine(d);
 
             if (Directory.Exists(asmDir + publishSubdir))
                 return asmDir + publishSubdir;
@@ -71,6 +66,13 @@ namespace Backend.AngularSpa
             return null;
         }
 
+        public static Dictionary<string, object> Subdirs(string dir)
+        {
+            var dict = new Dictionary<string, object>();
+            Directory.GetDirectories(dir).ToList().ForEach(d => dict[d] = Subdirs(d));
+            return dict;
+        }
+
         public static string SpaStaticRoot
         {
             get
@@ -85,8 +87,8 @@ namespace Backend.AngularSpa
             }
         }
 
-        private static string ClientBuildOutput { get => Source + BuildSubfolder; }
+        private static string ClientBuildOutput { get => Source + SpaBuildSubfolder; }
 
-        private static string PublishedSpaStatic { get => PublishedSPAFolderName + BuildSubfolder; }
+        private static string PublishedSpaStatic { get => PublishedSPAFolderName + SpaBuildSubfolder; }
     }
 }
