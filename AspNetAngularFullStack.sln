@@ -14,6 +14,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DockerDebug|Any CPU = DockerDebug|Any CPU
+		DockerRelease|Any CPU = DockerRelease|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -21,6 +22,8 @@ Global
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.DockerDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.DockerDebug|Any CPU.Build.0 = Debug|Any CPU
+		{D75B76F1-03A7-4EF5-8735-267502A8E531}.DockerRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{D75B76F1-03A7-4EF5-8735-267502A8E531}.DockerRelease|Any CPU.Build.0 = Release|Any CPU
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D75B76F1-03A7-4EF5-8735-267502A8E531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,6 +31,7 @@ Global
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.DockerDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.DockerDebug|Any CPU.Build.0 = Debug|Any CPU
+		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.DockerRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09B6E4C1-9F04-4A1B-B5D8-61CFEB8847D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
