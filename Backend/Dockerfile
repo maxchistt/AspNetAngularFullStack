@@ -33,7 +33,7 @@ RUN npm install
 COPY ["Frontend/","."]
 
 FROM node_install as node_build
-RUN npm run build -- --configuration production --output-path /app/publish/SPA/dist/build
+RUN npm run build -- --configuration production --output-path /app/publish/wwwroot
 
 FROM base AS final
 WORKDIR /app

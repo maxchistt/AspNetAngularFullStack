@@ -8,10 +8,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   constructor(private http:HttpClient) {
-    this.title = /*this.GetBaseUrl() +*/ '/api/SpaDir';
-    http.get<string>(this.title).subscribe((data) => {
-      this.title = "dadsdsa";
-      this.staticRoot = data.toString();
+    http.get<string>('/api/weatherForecast').subscribe((data) => {
+      this.forecast = data;
     });
 
   }
@@ -22,6 +20,7 @@ export class AppComponent {
     return isDevMode() ? this.developmentUrl : window.location.origin;
   }
 
+  forecast = 'forecast...';
   title = 'Frontend';
   staticRoot = "root";
 }
