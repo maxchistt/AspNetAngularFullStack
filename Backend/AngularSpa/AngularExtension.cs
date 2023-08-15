@@ -12,22 +12,13 @@ namespace Backend.AngularSpa
             }
         }
 
-        public static void AddAngularSpa(this WebApplication app, bool useDevSpaOnDev = false, string? proxy = null)
+        public static void AddAngularSpa(this WebApplication app, bool useDevSpaOnDev = true)
         {
             app.UseSpa(spa =>
             {
                 if (useDevSpaOnDev && app.Environment.IsDevelopment())
                 {
-                    spa.Options.SourcePath = AngularConfig.Source;
-                    if (string.IsNullOrEmpty(proxy))
-                    {
-                        spa.UseAngularCliServer(npmScript: "start");
-                    }
-                    else
-                    {
-                        //"http://localhost:4000"
-                        spa.UseProxyToSpaDevelopmentServer(proxy);
-                    }
+                    AngularCmd.StartAngularDev(Directory.GetCurrentDirectory() + "\\" + AngularConfig.Source);
                 }
             });
         }

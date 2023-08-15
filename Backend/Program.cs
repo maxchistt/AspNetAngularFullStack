@@ -29,7 +29,7 @@ app.MapSpaInfo("api/SpaDir")
     .WithOpenApi();
 
 app.UseStaticFiles();
-app.AddAngularSpaStatic(!EnvConfig.IsDebug);
-app.AddAngularSpa(false);
+app.AddAngularSpaStatic(/*!EnvConfig.IsDebug*/);
+app.AddAngularSpa(/*false*/);
 
 app.Run();
