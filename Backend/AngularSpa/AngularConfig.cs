@@ -27,7 +27,7 @@ namespace Backend.AngularSpa
             var outputSubdir = "/" + ClientBuildOutput.Replace("\\", "/");
             var curDir = Directory.GetCurrentDirectory().Replace("\\", "/");
 
-            if (EnvConfig.IsDebug)
+            if (/*EnvConfig.IsDebug || */false)
             {
                 var d = JsonConvert.SerializeObject(Subdirs(curDir), Formatting.Indented);
                 Console.WriteLine(d);

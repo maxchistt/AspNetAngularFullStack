@@ -11,20 +11,23 @@ builder.Services.ConfigAngularStaticFiles();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment() || EnvConfig.IsDebug)
+    app.UseDeveloperExceptionPage();
+
+app.UseCors(builder => builder.SetIsOriginAllowed(_ => true).AllowCredentials().AllowAnyHeader().AllowAnyMethod());
 app.UseRouting();
-app.UseCors(builder => builder.AllowAnyOrigin());
+
 if (app.Environment.IsDevelopment() || EnvConfig.IsDebug)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage();
 }
 
-app.MapWeatherForecast("api/weatherforecast")
+app.MapWeatherForecast("/api/weatherforecast")
     .WithName("GetWeatherForecast")
     .WithOpenApi();
 
-app.MapSpaInfo("api/SpaDir")
+app.MapSpaInfo("/api/SpaDir")
     .WithName("GetSpaDir")
     .WithOpenApi();
 

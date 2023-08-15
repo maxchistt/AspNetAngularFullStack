@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SpaServices.AngularCli;
+﻿using Microsoft.AspNetCore.SpaServices;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
+using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 
 namespace Backend.AngularSpa
 {
@@ -18,9 +21,26 @@ namespace Backend.AngularSpa
             {
                 if (useDevSpaOnDev && app.Environment.IsDevelopment())
                 {
-                    AngularCmd.StartAngularDev(Directory.GetCurrentDirectory() + "\\" + AngularConfig.Source);
+                    //spa.Options.DevServerPort = 4200;
+                    spa.Options.SourcePath = AngularConfig.Source;
+
+                    spa.UseAngularDevServer();
+
+                    //spa.UseAngularCliServer("start");
+                    //spa.UseProxyToSpaDevelopmentServer($"http://127.0.0.1:{spa.Options.DevServerPort}/");
                 }
             });
+
+        }
+
+        public static void UseAngularDevServer(this ISpaBuilder spa)
+        {
+            
+            var workdir = Directory.GetCurrentDirectory() + "\\" + spa.Options.SourcePath;
+            var appLifetime = spa.ApplicationBuilder.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+
+            new AngularDevServer(workdir, appLifetime).Start();
+            //spa.UseProxyToSpaDevelopmentServer($"http://127.0.0.1:{spa.Options.DevServerPort}/");
         }
 
         public static void ConfigAngularStaticFiles(this IServiceCollection services)
