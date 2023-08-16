@@ -3,6 +3,7 @@ version: '3.4'
 services:
   backend:
     image: ${DOCKER_REGISTRY-}backend
+    container_name: ServerAndClient
     build:
       context: .
       dockerfile: Backend/Dockerfile
