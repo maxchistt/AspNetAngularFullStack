@@ -28,7 +28,7 @@ WORKDIR /src
 COPY ["Frontend/package.json","Frontend/"] 
 COPY ["Frontend/package-lock.json","Frontend/"] 
 WORKDIR "/src/Frontend"
-RUN npm install --production
+RUN npm install
 #COPY . .
 COPY ["Frontend/","."]
 
