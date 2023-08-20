@@ -23,7 +23,7 @@ RUN dotnet build "Backend.csproj" -c Release -o /app/build
 FROM net_build AS net_publish
 RUN dotnet publish "Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM node:latest as node_install
+FROM node:slim as node_install
 WORKDIR /src
 COPY ["Frontend/package.json","Frontend/"] 
 COPY ["Frontend/package-lock.json","Frontend/"] 
