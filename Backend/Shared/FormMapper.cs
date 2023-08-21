@@ -18,21 +18,38 @@ namespace Backend.Shared
                 string name = prop.Name;
                 Type type = prop.PropertyType;
 
-                string res = string.Empty;
+                string? res = null;
+                IFormFile? file =  null;
 
                 if (form.ContainsKey(name))
                 {
                     res = form[name];
                 }
-
-                if (string.IsNullOrEmpty(res) && form.ContainsKey(name.ToLower()))
+                else if (form.ContainsKey(name.ToLower()))
                 {
                     res = form[name.ToLower()];
                 }
+                else 
+                {
+                    var f = form.Files.GetFile(name)?? form.Files.GetFile(name.ToLower());
+                    if (f is not null) file = f;
+                }
 
-                if (string.IsNullOrEmpty(res)) return;
+                if (string.IsNullOrEmpty(res) && file is null) return;
 
-                var obj = Convert.ChangeType(res, type);
+                object obj;
+                if(file is null)
+                {
+                   obj = Convert.ChangeType(res, type);
+                }
+                else if(file is IFormFile)
+                {
+                    obj = file;
+                }
+                else
+                {
+                    return;
+                }
 
                 prop.SetValue(item, obj);
             });

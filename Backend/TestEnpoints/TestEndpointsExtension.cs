@@ -1,5 +1,7 @@
 ﻿using Backend.Shared;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace Backend.TestEnpoints
@@ -10,19 +12,17 @@ namespace Backend.TestEnpoints
         {
             var builder = app.MapGroup(authRouteBase);
 
-            builder.MapPost("/posttest", [Authorize] (TestData data) =>
+            builder.MapPost("/posttest", [Authorize] (TestDataDTO data) =>
             {
-                return JsonConvert.SerializeObject(data);
+                return data;
             })
                 .WithName("posttest");
 
-            builder.MapPost("/posttestform", [Authorize] (HttpContext ctx) =>
+            builder.MapPost("/posttestform", [Authorize] (HttpRequest request) =>
             {
-                /*var ind = ctx.Request.Form["Id"];
-                var name = ctx.Request.Form["Name"];
-                return JsonConvert.SerializeObject(new TestData() { Id = ind, Name = name });*/
-                return JsonConvert.SerializeObject(FormMapper.Map<TestData>(ctx.Request.Form));
+                return FormMapper.Map<TestDataWithFileFormDTO>(request.Form);
             })
+                .Accepts<TestDataWithFileFormDTO>("multipart/form-data")
                 .WithName("posttestform");
 
             builder
