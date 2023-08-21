@@ -19,7 +19,7 @@ namespace Backend.Shared
                 Type type = prop.PropertyType;
 
                 string? res = null;
-                IFormFile? file =  null;
+                IFormFile? file = null;
 
                 if (form.ContainsKey(name))
                 {
@@ -29,20 +29,20 @@ namespace Backend.Shared
                 {
                     res = form[name.ToLower()];
                 }
-                else 
+                else
                 {
-                    var f = form.Files.GetFile(name)?? form.Files.GetFile(name.ToLower());
+                    var f = form.Files.GetFile(name) ?? form.Files.GetFile(name.ToLower());
                     if (f is not null) file = f;
                 }
 
                 if (string.IsNullOrEmpty(res) && file is null) return;
 
                 object obj;
-                if(file is null)
+                if (file is null)
                 {
-                   obj = Convert.ChangeType(res, type);
+                    obj = Convert.ChangeType(res, type);
                 }
-                else if(file is IFormFile)
+                else if (file is IFormFile)
                 {
                     obj = file;
                 }

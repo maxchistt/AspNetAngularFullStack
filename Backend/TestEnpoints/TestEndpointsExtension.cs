@@ -1,8 +1,5 @@
 ﻿using Backend.Shared;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace Backend.TestEnpoints
 {
