@@ -5,11 +5,18 @@ namespace Backend.Auth
 {
     public class AuthOptions
     {
-        public const string ISSUER = "MyAuthServer"; // издатель токена
-        public const string AUDIENCE = "MyAuthClient"; // потребитель токена
-        private const string KEY = "mysupersecret_secretkey!123";   // ключ для шифрации
+        public string ISSUER { get; } = "MyAuthServer"; // издатель токена
+        public string AUDIENCE { get; } = "MyAuthClient"; // потребитель токена
+        private string KEY { get; } = "mysupersecret_secretkey!123";   // ключ для шифрации
 
-        public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+        public AuthOptions(IConfiguration configuration)
+        {
+            ISSUER = configuration["Jwt:Issuer"] ?? ISSUER;
+            AUDIENCE = configuration["Jwt:Audience"] ?? AUDIENCE;
+            KEY = configuration["Jwt:Key"] ?? KEY;
+        }
+
+        public SymmetricSecurityKey GetSymmetricSecurityKey() =>
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
     }
 }

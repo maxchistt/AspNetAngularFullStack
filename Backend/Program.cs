@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenWithAuth();
-builder.Services.AddAuth();
+builder.Services.AddAuth(builder.Configuration);
 
 var app = builder.Build();
 
