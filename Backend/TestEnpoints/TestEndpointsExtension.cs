@@ -11,15 +11,18 @@ namespace Backend.TestEnpoints
 
             builder.MapPost("/posttest", [Authorize] (TestDataDTO data) =>
             {
-                return data;
+                return Results.Accepted(value: data);
             })
+                .Produces<TestDataDTO>(statusCode: StatusCodes.Status202Accepted)
                 .WithName("posttest");
 
             builder.MapPost("/posttestform", [Authorize] (HttpRequest request) =>
             {
-                return FormMapper.Map<TestDataWithFileFormDTO>(request.Form);
+                var data = FormMapper.Map<TestDataWithFileFormDTO>(request.Form);
+                return Results.Accepted(value: data);
             })
-                .Accepts<TestDataWithFileFormDTO>("multipart/form-data")
+                .Accepts<TestDataWithFileFormDTO>(contentType: "multipart/form-data")
+                .Produces<TestDataWithFileFormDTO>(statusCode: StatusCodes.Status202Accepted)
                 .WithName("posttestform");
 
             builder
