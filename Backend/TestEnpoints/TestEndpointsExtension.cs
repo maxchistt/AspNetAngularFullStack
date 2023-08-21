@@ -21,7 +21,7 @@ namespace Backend.TestEnpoints
                 var data = FormMapper.Map<TestDataWithFileFormDTO>(request.Form);
                 return Results.Accepted(value: data);
             })
-                .Accepts<TestDataWithFileFormDTO>(contentType: "multipart/form-data")
+                .Accepts<TestDataWithFileFormDTO>(contentType: HttpContentTypes.MultipatFormdata)
                 .Produces<TestDataWithFileFormDTO>(statusCode: StatusCodes.Status202Accepted)
                 .WithName("posttestform");
 
