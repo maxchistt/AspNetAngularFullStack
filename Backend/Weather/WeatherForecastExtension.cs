@@ -1,13 +1,13 @@
 ﻿namespace Backend.Weather
 {
-    public static class WeatherForecastEndpointExt
+    public static class WeatherForecastExtension
     {
         private static string[] summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public static RouteHandlerBuilder MapWeatherForecast(this WebApplication app, string route = "/weatherforecast")
+        public static RouteHandlerBuilder MapWeatherForecast(this WebApplication app, string route = "/api/weatherforecast")
         {
             return app.MapGet(route, () =>
             {
@@ -20,7 +20,10 @@
                     ))
                     .ToArray();
                 return forecast;
-            });
+            })
+                .WithName("GetWeatherForecast")
+                .WithTags("weather")
+                .WithOpenApi();
         }
     }
 }

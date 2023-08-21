@@ -1,29 +1,29 @@
-using Backend.Shared;
+using Backend.Auth;
+using Backend.TestEnpoints;
 using Backend.Weather;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGenWithAuth();
+builder.Services.AddAuth();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
-    app.UseDeveloperExceptionPage();
-
-app.UseCors(builder => builder.SetIsOriginAllowed(_ => true).AllowCredentials().AllowAnyHeader().AllowAnyMethod());
-app.UseRouting();
-
-if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    app.UseSwaggerAndUI();
 }
 
-app.MapWeatherForecast("/api/weatherforecast")
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+app.UseCors(builder => builder.AllowAnyOrigin());
+app.UseRouting();
+
+app.UseAuthAndMapEndpoints();
+
+app.MapWeatherForecast();
+app.MapTestEndpoints();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
