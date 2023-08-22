@@ -2,19 +2,11 @@
 {
     public class UserService : IUserService
     {
-        public readonly Role adminRole = new Role(Roles.Admin);
-        public readonly Role userRole = new Role(Roles.User);
-
-        public List<User> users;
-
-        public UserService()
+        public List<User> users = new List<User>
         {
-            users = new List<User>
-            {
-                new User("tom@gmail.com", "12345", adminRole),
-                new User("bob@gmail.com", "55555", userRole),
-            };
-        }
+            new User("tom@gmail.com", "12345", Roles.Admin),
+            new User("bob@gmail.com", "55555", Roles.User),
+        };
 
         public User? FindPerson(LoginDTO data)
         {

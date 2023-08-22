@@ -91,7 +91,7 @@ namespace Backend.Auth
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, person.Email),
-                    new Claim(ClaimTypes.Role, person.Role.Name),
+                    new Claim(ClaimTypes.Role, person.Role),
                 };
 
                 // создаем JWT-токен
