@@ -1,4 +1,5 @@
-﻿using Backend.Shared;
+﻿using Backend.Auth.Users;
+using Backend.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -83,7 +84,7 @@ namespace Backend.Auth
                 LoginDTO data = FormMapper.Map<LoginDTO>(form);
 
                 // находим пользователя
-                Person? person = userService.FindPerson(data);
+                User? person = userService.FindPerson(data);
                 // если пользователь не найден, отправляем статусный код 401
                 if (person is null) return Results.Unauthorized();
 
