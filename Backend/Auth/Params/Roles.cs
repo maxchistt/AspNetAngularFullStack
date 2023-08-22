@@ -11,5 +11,13 @@
             public const string AdminAndWorker = $"{Admin},{Worker}";
             public const string AllAllowed = $"{Client},{Admin},{Worker}";
         }
+
+        public enum Enum
+        { Client, Admin, Worker }
+
+        public static string GetRoleByEnum(Enum type) => dict[type];
+
+        private static readonly Dictionary<Enum, string> dict = new()
+        { { Enum.Worker, Worker }, { Enum.Admin, Admin }, { Enum.Client, Client } };
     }
 }

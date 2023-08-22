@@ -12,9 +12,27 @@ namespace Backend.Auth.Services
             new User("bob@gmail.com", "55555", Roles.Client),
         };
 
-        public User? FindPerson(LoginDTO data)
+        public bool CreateUser(LoginDTO loginData, Roles.Enum? role = null)
+        {
+            if (UserExists(loginData.Email)) return false;
+
+            users.Add(new User(
+                loginData.Email,
+                loginData.Password,
+                Roles.GetRoleByEnum(role ?? Roles.Enum.Client)
+            ));
+
+            return true;
+        }
+
+        public User? FindPersonWithPassword(LoginDTO data)
         {
             return users.Find(p => p.Email == data.Email && p.Password == data.Password);
+        }
+
+        public bool UserExists(string email)
+        {
+            return users.Any(u => u.Email == email);
         }
     }
 }

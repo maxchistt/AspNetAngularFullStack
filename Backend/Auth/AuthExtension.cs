@@ -86,7 +86,7 @@ namespace Backend.Auth
                 LoginDTO data = FormMapper.Map<LoginDTO>(form);
 
                 // находим пользователя
-                User? person = userService.FindPerson(data);
+                User? person = userService.FindPersonWithPassword(data);
                 // если пользователь не найден, отправляем статусный код 401
                 if (person is null) return Results.Unauthorized();
 
@@ -110,6 +110,27 @@ namespace Backend.Auth
                 .Produces<string>(statusCode: StatusCodes.Status200OK)
                 .WithName("auth login")
                 .WithDescription("login endpoint");
+
+            builder.MapPost("/register", (HttpRequest request, AuthOptionsService authOptions, IUserService userService) =>
+            {
+                // получаем из формы email и пароль
+                var form = request.Form;
+                // если email и/или пароль не установлены, посылаем статусный код ошибки 400
+                if (!form.ContainsKey("email") || !form.ContainsKey("password"))
+                    return Results.BadRequest("Email и/или пароль не установлены");
+
+                LoginDTO data = FormMapper.Map<LoginDTO>(form);
+
+                bool created = userService.CreateUser(data);
+
+                if (created) return Results.Json<string>(statusCode: StatusCodes.Status400BadRequest, data: $"User {data.Email} not created, already exists");
+
+                return Results.Json<string>(statusCode: StatusCodes.Status201Created, data: $"User {data.Email} created!");
+            })
+                .Accepts<LoginDTO>(contentType: HttpContentTypes.MultipatFormdata)
+                .Produces<string>(statusCode: StatusCodes.Status201Created)
+                .WithName("auth register")
+                .WithDescription("register endpoint");
 
             builder
                 .WithTags("auth")
