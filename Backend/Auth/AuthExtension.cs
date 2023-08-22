@@ -1,4 +1,6 @@
-﻿using Backend.Auth.Users;
+﻿using Backend.Auth.DTOs;
+using Backend.Auth.Models;
+using Backend.Auth.Services;
 using Backend.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -11,8 +13,8 @@ namespace Backend.Auth
     {
         public static void AddAuth(this IServiceCollection services, IConfiguration configuration)
         {
-            AuthOptions authOptions = new AuthOptions(configuration);
-            services.AddSingleton<AuthOptions>(authOptions);
+            AuthOptionsService authOptions = new AuthOptionsService(configuration);
+            services.AddSingleton<AuthOptionsService>(authOptions);
             services.AddSingleton<IUserService, UserService>();
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -51,7 +53,7 @@ namespace Backend.Auth
                 var request = context.HttpContext.Request;
                 var response = context.HttpContext.Response;
 
-                if (response.StatusCode is StatusCodes.Status401Unauthorized or StatusCodes.Status401Unauthorized)
+                if (response.StatusCode is StatusCodes.Status401Unauthorized or StatusCodes.Status403Forbidden)
                 {
                     response.Redirect("/api/auth/accessdenied");
                 }
@@ -73,7 +75,7 @@ namespace Backend.Auth
                 .Produces<string>(statusCode: 403)
                 .WithName("403 Denied");
 
-            builder.MapPost("/login", (HttpRequest request, AuthOptions authOptions, IUserService userService) =>
+            builder.MapPost("/login", (HttpRequest request, AuthOptionsService authOptions, IUserService userService) =>
             {
                 // получаем из формы email и пароль
                 var form = request.Form;

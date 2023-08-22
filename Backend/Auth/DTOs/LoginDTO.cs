@@ -1,4 +1,4 @@
-﻿namespace Backend.Auth
+﻿namespace Backend.Auth.DTOs
 {
     public record LoginDTO
     {

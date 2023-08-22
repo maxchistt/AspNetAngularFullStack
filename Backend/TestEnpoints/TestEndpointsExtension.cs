@@ -1,4 +1,5 @@
-﻿using Backend.Shared;
+﻿using Backend.Auth.Params;
+using Backend.Shared;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.TestEnpoints
@@ -9,7 +10,7 @@ namespace Backend.TestEnpoints
         {
             var builder = app.MapGroup(authRouteBase);
 
-            builder.MapPost("/posttest", [Authorize] (TestDataDTO data) =>
+            builder.MapPost("/posttest", [Authorize(Roles = Roles.Combinations.AdminAndWorker)] (TestDataDTO data) =>
             {
                 return Results.Accepted(value: data);
             })

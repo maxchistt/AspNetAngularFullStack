@@ -1,15 +1,15 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Backend.Auth
+namespace Backend.Auth.Services
 {
-    public class AuthOptions
+    public class AuthOptionsService
     {
         public string ISSUER { get; } = "MyAuthServer"; // издатель токена
         public string AUDIENCE { get; } = "MyAuthClient"; // потребитель токена
         private string KEY { get; } = "mysupersecret_secretkey!123";   // ключ для шифрации
 
-        public AuthOptions(IConfiguration configuration)
+        public AuthOptionsService(IConfiguration configuration)
         {
             ISSUER = configuration["Jwt:Issuer"] ?? ISSUER;
             AUDIENCE = configuration["Jwt:Audience"] ?? AUDIENCE;
