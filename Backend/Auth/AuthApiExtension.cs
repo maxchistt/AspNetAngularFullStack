@@ -24,6 +24,7 @@ namespace Backend.Auth
                 // если пользователь не найден, отправляем статусный код 401
                 if (person is null) return Results.Unauthorized();
 
+                // создаем токен
                 var token = tokenService.GenerateToken(person.Email, person.Role);
 
                 return Results.Ok(token);

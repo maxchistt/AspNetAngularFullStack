@@ -2,38 +2,42 @@
 using Backend.Auth.Models;
 using Backend.Auth.Params;
 using Backend.Auth.Services.Interfaces;
+using Backend.EF;
 
 namespace Backend.Auth.Services
 {
     public class UserService : IUserService
     {
-        public List<User> users = new List<User>
+        private DataContext _context;
+
+        public UserService(DataContext dataContext)
         {
-            new User("tom@gmail.com", "12345", Roles.Admin),
-            new User("bob@gmail.com", "55555", Roles.Client),
-        };
+            _context = dataContext;
+        }
 
         public bool CreateUser(LoginDTO loginData, Roles.Enum? role = null)
         {
             if (UserExists(loginData.Email)) return false;
 
-            users.Add(new User(
+            _context.Users.Add(new User(
                 loginData.Email,
                 loginData.Password,
                 Roles.GetRoleByEnum(role ?? Roles.Enum.Client)
             ));
+
+            _context.SaveChanges();
 
             return true;
         }
 
         public User? FindPersonWithPassword(LoginDTO data)
         {
-            return users.Find(p => p.Email == data.Email && p.Password == data.Password);
+            return _context.Users.Where(p => p.Email == data.Email && p.Password == data.Password).First();
         }
 
         public bool UserExists(string email)
         {
-            return users.Any(u => u.Email == email);
+            return _context.Users.Any(u => u.Email == email);
         }
     }
 }

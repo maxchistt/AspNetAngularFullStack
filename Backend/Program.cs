@@ -1,6 +1,8 @@
 using Backend.Auth;
+using Backend.EF;
 using Backend.TestEnpoints;
 using Backend.Weather;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,7 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt => opt.AddAuth());
 builder.Services.AddAuthServices(builder.Configuration);
+builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();
 
