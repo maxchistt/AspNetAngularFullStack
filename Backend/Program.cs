@@ -7,14 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenWithAuth();
-builder.Services.AddAuth(builder.Configuration);
+builder.Services.AddAuthServices(builder.Configuration);
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwaggerAndUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseCors(builder => builder.AllowAnyOrigin());

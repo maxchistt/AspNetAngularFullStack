@@ -32,12 +32,6 @@ namespace Backend.Auth
             Scheme = "Bearer"
         };
 
-        public static void UseSwaggerAndUI(this WebApplication app)
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
         public static IServiceCollection AddSwaggerGenWithAuth(this IServiceCollection services)
         {
             return services.AddSwaggerGen(opt => opt.AddAuth());

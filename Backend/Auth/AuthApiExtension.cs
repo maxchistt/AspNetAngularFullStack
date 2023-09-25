@@ -9,37 +9,8 @@ using System.Security.Claims;
 
 namespace Backend.Auth
 {
-    public static class AuthExtension
+    public static class AuthApiExtension
     {
-        public static void AddAuth(this IServiceCollection services, IConfiguration configuration)
-        {
-            AuthOptionsService authOptions = new AuthOptionsService(configuration);
-            services.AddSingleton<AuthOptionsService>(authOptions);
-            services.AddSingleton<IUserService, UserService>();
-            services.AddAuthorization();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        // указывает, будет ли валидироваться издатель при валидации токена
-                        ValidateIssuer = true,
-                        // строка, представляющая издателя
-                        ValidIssuer = authOptions.ISSUER,
-                        // будет ли валидироваться потребитель токена
-                        ValidateAudience = true,
-                        // установка потребителя токена
-                        ValidAudience = authOptions.AUDIENCE,
-                        // будет ли валидироваться время существования
-                        ValidateLifetime = true,
-                        // установка ключа безопасности
-                        IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-                        // валидация ключа безопасности
-                        ValidateIssuerSigningKey = true,
-                    };
-                });
-        }
-
         public static RouteGroupBuilder UseAuthAndMapEndpoints(this WebApplication app, string authRouteBase = "/api/auth")
         {
             app.UseAuth();
@@ -64,17 +35,19 @@ namespace Backend.Auth
             app.UseAuthorization();
         }
 
-        public static RouteGroupBuilder MapAuthEndpoints(this WebApplication app, string authRouteBase = "/api/auth")
-        {
-            var builder = app.MapGroup(authRouteBase);
 
+        private static void MapAccesDenied(this RouteGroupBuilder builder)
+        {
             builder.MapGet("/accessdenied", () =>
             {
                 return Results.Json(statusCode: 403, data: "Error 403: Access Denied");
             })
                 .Produces<string>(statusCode: 403)
                 .WithName("403 Denied");
+        }
 
+        private static void MapLogin(this RouteGroupBuilder builder)
+        {
             builder.MapPost("/login", (HttpRequest request, AuthOptionsService authOptions, IUserService userService) =>
             {
                 // получаем из формы email и пароль
@@ -110,7 +83,10 @@ namespace Backend.Auth
                 .Produces<string>(statusCode: StatusCodes.Status200OK)
                 .WithName("auth login")
                 .WithDescription("login endpoint");
+        }
 
+        private static void MapRegister(this RouteGroupBuilder builder)
+        {
             builder.MapPost("/register", (HttpRequest request, AuthOptionsService authOptions, IUserService userService) =>
             {
                 // получаем из формы email и пароль
@@ -131,6 +107,15 @@ namespace Backend.Auth
                 .Produces<string>(statusCode: StatusCodes.Status201Created)
                 .WithName("auth register")
                 .WithDescription("register endpoint");
+        }
+
+        public static RouteGroupBuilder MapAuthEndpoints(this WebApplication app, string authRouteBase = "/api/auth")
+        {
+            var builder = app.MapGroup(authRouteBase);
+
+            builder.MapAccesDenied();
+            builder.MapLogin();
+            builder.MapRegister();
 
             builder
                 .WithTags("auth")
