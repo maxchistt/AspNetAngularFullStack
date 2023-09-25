@@ -9,7 +9,7 @@ namespace Backend.Auth
     {
         private static void MapLogin(this RouteGroupBuilder builder)
         {
-            builder.MapPost("/login", (HttpRequest request, ITokenService tokenService, IUserService userService) =>
+            builder.MapPost("/login", (HttpRequest request, IUserService userService, ITokenService tokenService) =>
             {
                 // получаем из формы email и пароль
                 var form = request.Form;

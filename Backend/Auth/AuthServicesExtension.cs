@@ -12,6 +12,7 @@ namespace Backend.Auth
         {
             AuthOptions.ApplyConfiguration(configuration);
 
+            services.AddSingleton<ITokenService, TokenService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
