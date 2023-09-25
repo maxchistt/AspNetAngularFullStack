@@ -1,4 +1,5 @@
 ﻿using Backend.Auth.Services;
+using Backend.Auth.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -8,8 +9,8 @@ namespace Backend.Auth
     {
         public static void AddAuthServices(this IServiceCollection services, IConfiguration configuration)
         {
-            AuthOptionsService authOptions = new AuthOptionsService(configuration);
-            services.AddSingleton<AuthOptionsService>(authOptions);
+            IAuthOptionsService authOptions = new AuthOptionsService(configuration);
+            services.AddSingleton<IAuthOptionsService>(authOptions);
             services.AddSingleton<IUserService, UserService>();
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -34,6 +35,5 @@ namespace Backend.Auth
                     };
                 });
         }
-
     }
 }

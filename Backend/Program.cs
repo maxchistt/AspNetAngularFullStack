@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGenWithAuth();
+builder.Services.AddSwaggerGen(opt => opt.AddAuth());
 builder.Services.AddAuthServices(builder.Configuration);
 
 var app = builder.Build();
@@ -21,7 +21,10 @@ if (app.Environment.IsDevelopment())
 app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseRouting();
 
-app.UseAuthAndMapEndpoints();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapAuthEndpoints();
 
 app.MapWeatherForecast();
 app.MapTestEndpoints();

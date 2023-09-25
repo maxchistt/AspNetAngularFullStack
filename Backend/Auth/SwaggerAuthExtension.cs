@@ -5,9 +5,9 @@ namespace Backend.Auth
 {
     public static class SwaggerAuthExtension
     {
-        private static string AuthName = "Bearer JWT";
+        private static readonly string _authType = "Bearer JWT";
 
-        private static OpenApiSecurityRequirement requirement = new OpenApiSecurityRequirement
+        private static readonly OpenApiSecurityRequirement _requirement = new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecurityScheme
@@ -15,14 +15,14 @@ namespace Backend.Auth
                     Reference = new OpenApiReference
                     {
                         Type=ReferenceType.SecurityScheme,
-                        Id=AuthName
+                        Id=_authType
                     }
                 },
                 new string[]{}
             }
         };
 
-        private static OpenApiSecurityScheme scheme = new OpenApiSecurityScheme
+        private static readonly OpenApiSecurityScheme _scheme = new OpenApiSecurityScheme
         {
             In = ParameterLocation.Header,
             Description = "Please enter a valid token",
@@ -32,26 +32,10 @@ namespace Backend.Auth
             Scheme = "Bearer"
         };
 
-        public static IServiceCollection AddSwaggerGenWithAuth(this IServiceCollection services)
-        {
-            return services.AddSwaggerGen(opt => opt.AddAuth());
-        }
-
-        public static void AddAuthWithoutRequirement(this SwaggerGenOptions option)
-        {
-            option.AddSecurityDefinition(AuthName, scheme);
-        }
-
         public static void AddAuth(this SwaggerGenOptions option)
         {
-            option.AddAuthWithoutRequirement();
-            option.AddSecurityRequirement(requirement);
-        }
-
-        public static OpenApiOperation WithAuth(this OpenApiOperation op)
-        {
-            op.Security.Add(requirement);
-            return op;
+            option.AddSecurityDefinition(_authType, _scheme);
+            option.AddSecurityRequirement(_requirement);
         }
     }
 }

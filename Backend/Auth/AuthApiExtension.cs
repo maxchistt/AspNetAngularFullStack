@@ -1,54 +1,15 @@
 ﻿using Backend.Auth.DTOs;
 using Backend.Auth.Models;
-using Backend.Auth.Services;
+using Backend.Auth.Services.Interfaces;
 using Backend.Shared;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Backend.Auth
 {
     public static class AuthApiExtension
     {
-        public static RouteGroupBuilder UseAuthAndMapEndpoints(this WebApplication app, string authRouteBase = "/api/auth")
-        {
-            app.UseAuth();
-            return app.MapAuthEndpoints(authRouteBase);
-        }
-
-        public static void UseAuth(this WebApplication app)
-        {
-            app.UseStatusCodePages(context =>
-            {
-                var request = context.HttpContext.Request;
-                var response = context.HttpContext.Response;
-
-                if (response.StatusCode is StatusCodes.Status401Unauthorized or StatusCodes.Status403Forbidden)
-                {
-                    response.Redirect("/api/auth/accessdenied");
-                }
-
-                return Task.CompletedTask;
-            });
-            app.UseAuthentication();
-            app.UseAuthorization();
-        }
-
-
-        private static void MapAccesDenied(this RouteGroupBuilder builder)
-        {
-            builder.MapGet("/accessdenied", () =>
-            {
-                return Results.Json(statusCode: 403, data: "Error 403: Access Denied");
-            })
-                .Produces<string>(statusCode: 403)
-                .WithName("403 Denied");
-        }
-
         private static void MapLogin(this RouteGroupBuilder builder)
         {
-            builder.MapPost("/login", (HttpRequest request, AuthOptionsService authOptions, IUserService userService) =>
+            builder.MapPost("/login", (HttpRequest request, ITokenService tokenService, IUserService userService) =>
             {
                 // получаем из формы email и пароль
                 var form = request.Form;
@@ -63,21 +24,9 @@ namespace Backend.Auth
                 // если пользователь не найден, отправляем статусный код 401
                 if (person is null) return Results.Unauthorized();
 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, person.Email),
-                    new Claim(ClaimTypes.Role, person.Role),
-                };
+                var token = tokenService.GenerateToken(person.Email, person.Role);
 
-                // создаем JWT-токен
-                var jwt = new JwtSecurityToken(
-                        issuer: authOptions.ISSUER,
-                        audience: authOptions.AUDIENCE,
-                        claims: claims,
-                        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-                        signingCredentials: new SigningCredentials(authOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-                return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
+                return Results.Ok(token);
             })
                 .Accepts<LoginDTO>(contentType: HttpContentTypes.MultipatFormdata)
                 .Produces<string>(statusCode: StatusCodes.Status200OK)
@@ -87,7 +36,7 @@ namespace Backend.Auth
 
         private static void MapRegister(this RouteGroupBuilder builder)
         {
-            builder.MapPost("/register", (HttpRequest request, AuthOptionsService authOptions, IUserService userService) =>
+            builder.MapPost("/register", (HttpRequest request, IUserService userService) =>
             {
                 // получаем из формы email и пароль
                 var form = request.Form;
@@ -113,7 +62,6 @@ namespace Backend.Auth
         {
             var builder = app.MapGroup(authRouteBase);
 
-            builder.MapAccesDenied();
             builder.MapLogin();
             builder.MapRegister();
 

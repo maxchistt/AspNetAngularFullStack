@@ -2,7 +2,7 @@
 using Backend.Auth.Models;
 using Backend.Auth.Params;
 
-namespace Backend.Auth.Services
+namespace Backend.Auth.Services.Interfaces
 {
     public interface IUserService
     {

@@ -1,9 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Backend.Auth.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace Backend.Auth.Services
 {
-    public class AuthOptionsService
+    public class AuthOptionsService : IAuthOptionsService
     {
         public string ISSUER { get; } = "MyAuthServer"; // издатель токена
         public string AUDIENCE { get; } = "MyAuthClient"; // потребитель токена

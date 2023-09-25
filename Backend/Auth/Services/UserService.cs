@@ -1,6 +1,7 @@
 ﻿using Backend.Auth.DTOs;
 using Backend.Auth.Models;
 using Backend.Auth.Params;
+using Backend.Auth.Services.Interfaces;
 
 namespace Backend.Auth.Services
 {
