@@ -1,5 +1,7 @@
 ﻿using Backend.Auth.Models;
+using Backend.Auth.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Backend.EF
 {
@@ -7,7 +9,7 @@ namespace Backend.EF
     {
         public DbSet<User> Users { get; set; } = null!;
 
-        public DataContext()
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             bool created = Database.EnsureCreated();
             Console.WriteLine($"{nameof(DataContext)} connection created. EnsureCreated:{created}");
@@ -15,7 +17,14 @@ namespace Backend.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(InitialData.Users);
+            IPasswordHashingService hasher = this.Database.GetService<IPasswordHashingService>()
+                ?? throw new NullReferenceException("No PasswordHashingService!");
+
+            modelBuilder.Entity<User>().HasData(InitialData.Users.Select(user => new User(
+                user.Email,
+                hasher.HashPassword(user.Password),
+                user.Role
+            )));
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Backend.Auth
 
                 bool created = userService.CreateUser(data);
 
-                if (created) return Results.Json<string>(statusCode: StatusCodes.Status400BadRequest, data: $"User {data.Email} not created, already exists");
+                if (!created) return Results.Json<string>(statusCode: StatusCodes.Status400BadRequest, data: $"User {data.Email} not created, already exists");
 
                 return Results.Json<string>(statusCode: StatusCodes.Status201Created, data: $"User {data.Email} created!");
             })

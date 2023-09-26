@@ -8,36 +8,44 @@ namespace Backend.Auth.Services
 {
     public class UserService : IUserService
     {
-        private DataContext _context;
+        private DataContext Context { get; }
+        private IPasswordHashingService Hasher { get; }
 
-        public UserService(DataContext dataContext)
+        public UserService(DataContext dataContext, IPasswordHashingService hasher)
         {
-            _context = dataContext;
+            Context = dataContext;
+            Hasher = hasher;
         }
 
         public bool CreateUser(LoginDTO loginData, Roles.Enum? role = null)
         {
             if (UserExists(loginData.Email)) return false;
 
-            _context.Users.Add(new User(
+            Context.Users.Add(new User(
                 loginData.Email,
-                loginData.Password,
+                Hasher.HashPassword(loginData.Password),
                 Roles.GetRoleByEnum(role ?? Roles.Enum.Client)
             ));
 
-            _context.SaveChanges();
+            Context.SaveChanges();
 
             return true;
         }
 
         public User? FindPersonWithPassword(LoginDTO data)
         {
-            return _context.Users.Where(p => p.Email == data.Email && p.Password == data.Password).First();
+            var user = Context.Users.FirstOrDefault(p => p.Email == data.Email);
+            if (user is null) return null;
+
+            bool passwordVerified = Hasher.Verify(data.Password, user.Password);
+            if (!passwordVerified) return null;
+
+            return user;
         }
 
         public bool UserExists(string email)
         {
-            return _context.Users.Any(u => u.Email == email);
+            return Context.Users.Any(u => u.Email == email);
         }
     }
 }
