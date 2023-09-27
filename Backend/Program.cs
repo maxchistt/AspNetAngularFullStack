@@ -1,5 +1,5 @@
 using Backend.Auth;
-using Backend.EF;
+using Backend.EF.Context;
 using Backend.TestEnpoints;
 using Backend.Weather;
 using Microsoft.EntityFrameworkCore;

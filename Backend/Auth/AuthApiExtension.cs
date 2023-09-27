@@ -1,6 +1,6 @@
 ﻿using Backend.Auth.DTOs;
-using Backend.Auth.Models;
 using Backend.Auth.Services.Interfaces;
+using Backend.EF.Models;
 using Backend.Shared;
 
 namespace Backend.Auth

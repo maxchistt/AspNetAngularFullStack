@@ -1,8 +1,8 @@
 ﻿using Backend.Auth.DTOs;
-using Backend.Auth.Models;
 using Backend.Auth.Params;
 using Backend.Auth.Services.Interfaces;
-using Backend.EF;
+using Backend.EF.Context;
+using Backend.EF.Models;
 
 namespace Backend.Auth.Services
 {
@@ -17,14 +17,14 @@ namespace Backend.Auth.Services
             Hasher = hasher;
         }
 
-        public bool CreateUser(LoginDTO loginData, Roles.Enum? role = null)
+        public bool CreateUser(LoginDTO loginData, Roles.Enum role = Roles.Enum.Client)
         {
             if (UserExists(loginData.Email)) return false;
 
             Context.Users.Add(new User(
                 loginData.Email,
                 Hasher.HashPassword(loginData.Password),
-                Roles.GetRoleByEnum(role ?? Roles.Enum.Client)
+                Roles.GetRoleByEnum(role)
             ));
 
             Context.SaveChanges();

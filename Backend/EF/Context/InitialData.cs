@@ -1,7 +1,7 @@
-﻿using Backend.Auth.Models;
-using Backend.Auth.Params;
+﻿using Backend.Auth.Params;
+using Backend.EF.Models;
 
-namespace Backend.EF
+namespace Backend.EF.Context
 {
     public static class InitialData
     {

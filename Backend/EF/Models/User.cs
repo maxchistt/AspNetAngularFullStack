@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Auth.Models
+namespace Backend.EF.Models
 {
-    [Index(nameof(User.Email), IsUnique = true)]
+    [Index(nameof(Email), IsUnique = true)]
     public class User
     {
         [Key]

@@ -1,9 +1,9 @@
-﻿using Backend.Auth.Models;
-using Backend.Auth.Services.Interfaces;
+﻿using Backend.Auth.Services.Interfaces;
+using Backend.EF.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Backend.EF
+namespace Backend.EF.Context
 {
     public class DataContext : DbContext
     {
@@ -17,7 +17,7 @@ namespace Backend.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            IPasswordHashingService hasher = this.Database.GetService<IPasswordHashingService>()
+            IPasswordHashingService hasher = Database.GetService<IPasswordHashingService>()
                 ?? throw new NullReferenceException("No PasswordHashingService!");
 
             modelBuilder.Entity<User>().HasData(InitialData.Users.Select(user => new User(
