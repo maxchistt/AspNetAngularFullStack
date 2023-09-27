@@ -8,8 +8,10 @@ namespace Backend.Auth.Services.Interfaces
     {
         public bool UserExists(string email);
 
-        public User? FindPersonWithPassword(LoginDTO data);
+        public User? GetPersonWithPassword(LoginDTO data);
 
         public bool CreateUser(LoginDTO loginData, Roles.Enum? role = null);
+
+        public bool ChangePassword(PasswordResetDTO data);
     }
 }

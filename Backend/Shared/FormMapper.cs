@@ -56,5 +56,32 @@ namespace Backend.Shared
 
             return item;
         }
+
+        public static bool Validate<T>(IFormCollection form) where T : new()
+        {
+            if (!proplists.ContainsKey(typeof(T)))
+                proplists[typeof(T)] = typeof(T).GetProperties().ToList();
+
+            foreach (var prop in proplists[typeof(T)])
+            {
+                string name = prop.Name;
+
+                bool contains = false;
+
+                if (form.ContainsKey(name) || form.ContainsKey(name.ToLower()))
+                {
+                    contains = true;
+                }
+                else
+                {
+                    var f = form.Files.GetFile(name) ?? form.Files.GetFile(name.ToLower());
+                    if (f is not null) contains = true;
+                }
+
+                if (!contains) return false;
+            }
+
+            return true;
+        }
     }
 }

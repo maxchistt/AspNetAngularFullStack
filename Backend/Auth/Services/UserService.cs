@@ -32,7 +32,7 @@ namespace Backend.Auth.Services
             return true;
         }
 
-        public User? FindPersonWithPassword(LoginDTO data)
+        public User? GetPersonWithPassword(LoginDTO data)
         {
             var user = Context.Users.FirstOrDefault(p => p.Email == data.Email);
             if (user is null) return null;
@@ -46,6 +46,20 @@ namespace Backend.Auth.Services
         public bool UserExists(string email)
         {
             return Context.Users.Any(u => u.Email == email);
+        }
+
+        public bool ChangePassword(PasswordResetDTO data)
+        {
+            var user = GetPersonWithPassword((LoginDTO)data);
+
+            if (user is null) return false;
+
+            user.Password = Hasher.HashPassword(data.NewPassword);
+
+            Context.Update(user);
+            Context.SaveChanges();
+
+            return true;
         }
     }
 }
