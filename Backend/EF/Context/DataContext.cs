@@ -20,11 +20,13 @@ namespace Backend.EF.Context
             IPasswordHashingService hasher = Database.GetService<IPasswordHashingService>()
                 ?? throw new NullReferenceException("No PasswordHashingService!");
 
-            modelBuilder.Entity<User>().HasData(InitialData.Users.Select(user => new User(
-                user.Email,
-                hasher.HashPassword(user.Password),
-                user.Role
-            )));
+            modelBuilder.Entity<User>().HasData(InitialData.Users.Select(user => new User()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Password = hasher.HashPassword(user.Password),
+                Role = user.Role
+            }));
         }
     }
 }

@@ -7,13 +7,13 @@ namespace Backend.EF.Models
     public class User
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
 
         [Required]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
-        public string Password { get; set; }
-        public string Role { get; set; }
+        public string Password { get; set; } = null!;
+        public string Role { get; set; } = null!;
 
         public User()
         { }

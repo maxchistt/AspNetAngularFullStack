@@ -6,8 +6,8 @@ namespace Backend.EF.Context
     public static class InitialData
     {
         public static readonly User[] Users = {
-            new User("tom@gmail.com", "12345", Roles.Admin),
-            new User("bob@gmail.com", "55555", Roles.Client),
+            new User() {Id = 1, Email = "tom@gmail.com", Password = "12345", Role = Roles.Admin },
+            new User() {Id = 2, Email = "bob@gmail.com", Password = "55555", Role = Roles.Client },
         };
     }
 }
