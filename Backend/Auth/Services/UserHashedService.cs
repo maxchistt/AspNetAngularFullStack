@@ -1,29 +1,28 @@
-﻿using Backend.Auth.DTOs;
-using Backend.Auth.Params;
+﻿using Backend.Auth.Params;
 using Backend.Auth.Services.Interfaces;
 using Backend.EF.Context;
 using Backend.EF.Models;
 
 namespace Backend.Auth.Services
 {
-    public class UserService : IUserService
+    public class UserHashedService : IUserService
     {
         private DataContext Context { get; }
         private IPasswordHashingService Hasher { get; }
 
-        public UserService(DataContext dataContext, IPasswordHashingService hasher)
+        public UserHashedService(DataContext dataContext, IPasswordHashingService hasher)
         {
             Context = dataContext;
             Hasher = hasher;
         }
 
-        public bool CreateUser(LoginDTO loginData, Roles.Enum role = Roles.Enum.Client)
+        public bool CreateUser(string email, string password, Roles.Enum role = Roles.Enum.Client)
         {
-            if (UserExists(loginData.Email)) return false;
+            if (UserExists(email)) return false;
 
             Context.Users.Add(new User(
-                loginData.Email,
-                Hasher.HashPassword(loginData.Password),
+                email,
+                Hasher.HashPassword(password),
                 Roles.GetRoleByEnum(role)
             ));
 
@@ -32,12 +31,17 @@ namespace Backend.Auth.Services
             return true;
         }
 
-        public User? GetPersonWithPassword(LoginDTO data)
+        public User? GetUser(string email)
         {
-            var user = Context.Users.FirstOrDefault(p => p.Email == data.Email);
+            return Context.Users.FirstOrDefault(p => p.Email == email);
+        }
+
+        public User? GetUserWithPasswordCheck(string email, string password)
+        {
+            var user = GetUser(email);
             if (user is null) return null;
 
-            bool passwordVerified = Hasher.Verify(data.Password, user.Password);
+            bool passwordVerified = Hasher.Verify(password, user.Password);
             if (!passwordVerified) return null;
 
             return user;
@@ -48,13 +52,12 @@ namespace Backend.Auth.Services
             return Context.Users.Any(u => u.Email == email);
         }
 
-        public bool ChangePassword(PasswordResetDTO data)
+        public bool SetNewPassword(string email, string newPassword)
         {
-            var user = GetPersonWithPassword((LoginDTO)data);
-
+            var user = GetUser(email);
             if (user is null) return false;
 
-            user.Password = Hasher.HashPassword(data.NewPassword);
+            user.Password = Hasher.HashPassword(newPassword);
 
             Context.Update(user);
             Context.SaveChanges();

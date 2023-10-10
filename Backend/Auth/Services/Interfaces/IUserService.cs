@@ -1,5 +1,4 @@
-﻿using Backend.Auth.DTOs;
-using Backend.Auth.Params;
+﻿using Backend.Auth.Params;
 using Backend.EF.Models;
 
 namespace Backend.Auth.Services.Interfaces
@@ -8,10 +7,12 @@ namespace Backend.Auth.Services.Interfaces
     {
         public bool UserExists(string email);
 
-        public User? GetPersonWithPassword(LoginDTO data);
+        public User? GetUser(string email);
 
-        public bool CreateUser(LoginDTO loginData, Roles.Enum role = Roles.Enum.Client);
+        public User? GetUserWithPasswordCheck(string email, string password);
 
-        public bool ChangePassword(PasswordResetDTO data);
+        public bool CreateUser(string email, string password, Roles.Enum role = Roles.Enum.Client);
+
+        public bool SetNewPassword(string email, string newPassword);
     }
 }
