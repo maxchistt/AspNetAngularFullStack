@@ -10,12 +10,12 @@ namespace Backend.Auth
         {
             // находим пользователя
             User? person = userService.GetPersonWithPassword(data);
+
             // если пользователь не найден, отправляем статусный код 401
             if (person is null) return Results.Unauthorized();
 
             // создаем токен
             var token = tokenService.GenerateToken(person.Email, person.Role);
-
             return Results.Ok(token);
         }
 
@@ -23,18 +23,18 @@ namespace Backend.Auth
         {
             bool created = userService.CreateUser(data);
 
-            if (!created) return Results.Json(statusCode: StatusCodes.Status400BadRequest, data: $"User {data.Email} not created, already exists");
+            if (!created) return Results.BadRequest($"User {data.Email} not created, already exists");
 
             return Results.Json(statusCode: StatusCodes.Status201Created, data: $"User {data.Email} created!");
         }
 
-        public static IResult PasswordChange(LoginDTO data, IUserService userService)
+        public static IResult PasswordChange(PasswordResetDTO data, IUserService userService)
         {
-            bool created = userService.CreateUser(data);
+            bool changed = userService.ChangePassword(data);
 
-            if (!created) return Results.Json(statusCode: StatusCodes.Status400BadRequest, data: $"User {data.Email} not created, already exists");
+            if (!changed) return Results.BadRequest($"Password not changed, bad login data");
 
-            return Results.Json(statusCode: StatusCodes.Status201Created, data: $"User {data.Email} created!");
+            return Results.Ok($"Password changed!");
         }
     }
 }
