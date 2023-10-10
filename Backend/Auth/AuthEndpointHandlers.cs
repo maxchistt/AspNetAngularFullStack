@@ -1,36 +1,32 @@
 ﻿using Backend.Auth.DTOs;
 using Backend.Auth.Services.Interfaces;
-using Backend.EF.Models;
 
 namespace Backend.Auth
 {
     public static class AuthEndpointHandlers
     {
-        public static IResult Login(LoginDTO data, IUserService userService, ITokenService tokenService)
+        public static IResult Login(LoginDTO data, IAuthService authService)
         {
-            // находим пользователя
-            User? person = userService.GetPersonWithPassword(data);
-
-            // если пользователь не найден, отправляем статусный код 401
-            if (person is null) return Results.Unauthorized();
-
-            // создаем токен
-            var token = tokenService.GenerateToken(person.Email, person.Role);
+            // пробуем получить токен
+            string? token = authService.Login(data);
+            // если не удалось, отправляем статусный код 401
+            if (token is null) return Results.Unauthorized();
+            // возвращаем токен
             return Results.Ok(token);
         }
 
-        public static IResult Register(LoginDTO data, IUserService userService)
+        public static IResult Register(LoginDTO data, IAuthService authService)
         {
-            bool created = userService.CreateUser(data);
+            bool created = authService.Register(data);
 
             if (!created) return Results.BadRequest($"User {data.Email} not created, already exists");
 
             return Results.Json(statusCode: StatusCodes.Status201Created, data: $"User {data.Email} created!");
         }
 
-        public static IResult PasswordChange(PasswordResetDTO data, IUserService userService)
+        public static IResult PasswordChange(PasswordResetDTO data, IAuthService authService)
         {
-            bool changed = userService.ChangePassword(data);
+            bool changed = authService.PasswordChange(data);
 
             if (!changed) return Results.BadRequest($"Password not changed, bad login data");
 
