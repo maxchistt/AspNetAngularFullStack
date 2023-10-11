@@ -1,16 +1,16 @@
-using Backend.Auth;
-using Backend.EF.Context;
-using Backend.TestEnpoints;
-using Backend.Weather;
-using Microsoft.EntityFrameworkCore;
+using Backend.Endpoints.Auth;
+using Backend.Endpoints.TestEnpoints;
+using Backend.Endpoints.Weather;
+using Backend.ServiceRegistration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt => opt.AddAuth());
+builder.Services.AddSwaggerGenWithJWTAuth();
+builder.Services.AddUserServices();
 builder.Services.AddAuthServices(builder.Configuration);
-builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+builder.Services.AddSqlServerDbContext(builder.Configuration);
 
 var app = builder.Build();
 

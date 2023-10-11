@@ -1,5 +1,5 @@
-﻿using Backend.Auth.Params;
-using Backend.EF.Models;
+﻿using Backend.EF.Models;
+using Backend.Shared.Auth.Params;
 
 namespace Backend.EF.Context
 {

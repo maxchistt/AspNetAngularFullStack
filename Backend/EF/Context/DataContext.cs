@@ -1,5 +1,5 @@
-﻿using Backend.Auth.Services.Interfaces;
-using Backend.EF.Models;
+﻿using Backend.EF.Models;
+using Backend.Services.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
