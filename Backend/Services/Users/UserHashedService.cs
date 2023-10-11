@@ -1,7 +1,7 @@
 ﻿using Backend.EF.Context;
 using Backend.EF.Models;
 using Backend.Services.Users.Interfaces;
-using Backend.Shared.Auth.Params;
+using Backend.Shared.AuthParams;
 
 namespace Backend.Services.Users
 {

@@ -1,6 +1,5 @@
 ﻿using Backend.Services.Auth;
 using Backend.Services.Auth.Interfaces;
-using Backend.Shared.Auth.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,28 +9,28 @@ namespace Backend.ServiceRegistration
     {
         public static void AddAuthServices(this IServiceCollection services, IConfiguration configuration)
         {
-            AuthOptions.ApplyConfiguration(configuration);
-
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddSingleton<ITokenOptions, TokenOptions>();
+            services.AddSingleton<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    var tokenOptions = new TokenOptions(configuration);
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         // указывает, будет ли валидироваться издатель при валидации токена
                         ValidateIssuer = true,
                         // строка, представляющая издателя
-                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidIssuer = tokenOptions.ISSUER,
                         // будет ли валидироваться потребитель токена
                         ValidateAudience = true,
                         // установка потребителя токена
-                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidAudience = tokenOptions.AUDIENCE,
                         // будет ли валидироваться время существования
                         ValidateLifetime = true,
                         // установка ключа безопасности
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        IssuerSigningKey = tokenOptions.GetSymmetricSecurityKey(),
                         // валидация ключа безопасности
                         ValidateIssuerSigningKey = true,
                     };

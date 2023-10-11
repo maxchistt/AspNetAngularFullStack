@@ -1,5 +1,4 @@
 ﻿using Backend.Services.Auth.Interfaces;
-using Backend.Shared.Auth.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,6 +7,13 @@ namespace Backend.Services.Auth
 {
     public class TokenService : ITokenService
     {
+        private ITokenOptions _tokenOptions;
+
+        public TokenService(ITokenOptions tokenOptions)
+        {
+            _tokenOptions = tokenOptions;
+        }
+
         public string GenerateToken(string claimName, string claimRole)
         {
             var claims = new List<Claim>
@@ -18,11 +24,11 @@ namespace Backend.Services.Auth
 
             // создаем JWT-токен
             var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
+                    issuer: _tokenOptions.ISSUER,
+                    audience: _tokenOptions.AUDIENCE,
                     claims: claims,
                     expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    signingCredentials: new SigningCredentials(_tokenOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }

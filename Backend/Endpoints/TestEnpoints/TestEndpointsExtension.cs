@@ -1,5 +1,5 @@
 ﻿using Backend.DTOs.Other;
-using Backend.Shared.Auth.Params;
+using Backend.Shared.AuthParams;
 using Backend.Shared.Other;
 using Microsoft.AspNetCore.Authorization;
 

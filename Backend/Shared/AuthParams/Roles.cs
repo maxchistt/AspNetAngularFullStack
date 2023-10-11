@@ -1,4 +1,4 @@
-﻿namespace Backend.Shared.Auth.Params
+﻿namespace Backend.Shared.AuthParams
 {
     public static class Roles
     {
