@@ -5,37 +5,35 @@ namespace Backend.ServiceRegistration
 {
     public static class SwaggerAuthExtension
     {
-        private static readonly string _authType = "Bearer JWT";
-
-        private static readonly OpenApiSecurityRequirement _requirement = new OpenApiSecurityRequirement
+        public static void AddAuth(this SwaggerGenOptions option)
         {
-            {
+            var authType = "Bearer JWT";
+
+            var requirement = new OpenApiSecurityRequirement
+            {{
                 new OpenApiSecurityScheme
                 {
                     Reference = new OpenApiReference
                     {
-                        Type=ReferenceType.SecurityScheme,
-                        Id=_authType
+                        Type = ReferenceType.SecurityScheme,
+                        Id = authType
                     }
                 },
                 new string[]{}
-            }
-        };
+            }};
 
-        private static readonly OpenApiSecurityScheme _scheme = new OpenApiSecurityScheme
-        {
-            In = ParameterLocation.Header,
-            Description = "Please enter a valid token",
-            Name = "Authorization",
-            Type = SecuritySchemeType.Http,
-            BearerFormat = "JWT",
-            Scheme = "Bearer"
-        };
+            var scheme = new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
+            };
 
-        public static void AddAuth(this SwaggerGenOptions option)
-        {
-            option.AddSecurityDefinition(_authType, _scheme);
-            option.AddSecurityRequirement(_requirement);
+            option.AddSecurityDefinition(authType, scheme);
+            option.AddSecurityRequirement(requirement);
         }
 
         public static void AddSwaggerGenWithJWTAuth(this IServiceCollection services)
