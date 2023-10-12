@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Backend.ServiceRegistration
+namespace Backend.ServiceConfig
 {
     public static class SwaggerAuthExtension
     {

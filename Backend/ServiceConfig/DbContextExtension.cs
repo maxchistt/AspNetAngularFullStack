@@ -1,7 +1,7 @@
 ﻿using Backend.EF.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.ServiceRegistration
+namespace Backend.ServiceConfig
 {
     public static class DbContextExtension
     {

@@ -1,7 +1,7 @@
 using Backend.Endpoints.Auth;
 using Backend.Endpoints.TestEnpoints;
 using Backend.Endpoints.Weather;
-using Backend.ServiceRegistration;
+using Backend.ServiceConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 

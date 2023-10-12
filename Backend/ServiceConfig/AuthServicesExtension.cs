@@ -3,7 +3,7 @@ using Backend.Services.Auth.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Backend.ServiceRegistration
+namespace Backend.ServiceConfig
 {
     public static class AuthServicesExtension
     {

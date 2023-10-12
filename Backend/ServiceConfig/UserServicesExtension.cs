@@ -1,7 +1,7 @@
 ﻿using Backend.Services.Users;
 using Backend.Services.Users.Interfaces;
 
-namespace Backend.ServiceRegistration
+namespace Backend.ServiceConfig
 {
     public static class UserServicesExtension
     {
