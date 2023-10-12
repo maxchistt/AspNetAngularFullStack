@@ -1,7 +1,7 @@
-﻿using Backend.EF.Models;
+﻿using Backend.Models;
 using Backend.Shared.AuthParams;
 
-namespace Backend.EF.Context
+namespace Backend.EF.Initial
 {
     public static class InitialData
     {

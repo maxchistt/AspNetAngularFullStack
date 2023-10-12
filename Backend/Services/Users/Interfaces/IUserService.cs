@@ -1,4 +1,4 @@
-﻿using Backend.EF.Models;
+﻿using Backend.Models;
 using Backend.Shared.AuthParams;
 
 namespace Backend.Services.Users.Interfaces

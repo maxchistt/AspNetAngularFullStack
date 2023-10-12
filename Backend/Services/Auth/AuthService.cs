@@ -1,5 +1,5 @@
 ﻿using Backend.DTOs.Auth;
-using Backend.EF.Models;
+using Backend.Models;
 using Backend.Services.Auth.Interfaces;
 using Backend.Services.Users.Interfaces;
 

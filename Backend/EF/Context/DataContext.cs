@@ -1,4 +1,5 @@
-﻿using Backend.EF.Models;
+﻿using Backend.EF.Initial;
+using Backend.Models;
 using Backend.Services.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -11,13 +12,13 @@ namespace Backend.EF.Context
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            bool created = Database.EnsureCreated();
+            bool created = base.Database.EnsureCreated();
             Console.WriteLine($"{nameof(DataContext)} connection created. EnsureCreated:{created}");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            IPasswordHashingService hasher = Database.GetService<IPasswordHashingService>()
+            IPasswordHashingService hasher = base.Database.GetService<IPasswordHashingService>()
                 ?? throw new NullReferenceException("No PasswordHashingService!");
 
             modelBuilder.Entity<User>().HasData(InitialData.Users.Select(user => new User()
