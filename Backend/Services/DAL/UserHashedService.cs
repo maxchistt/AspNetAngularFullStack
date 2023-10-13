@@ -1,9 +1,10 @@
 ﻿using Backend.EF.Context;
 using Backend.Models.Users;
-using Backend.Services.DAL.Users.Interfaces;
+using Backend.Services.DAL.Interfaces;
+using Backend.Services.Other.Interfaces;
 using Backend.Shared.AuthParams;
 
-namespace Backend.Services.DAL.Users
+namespace Backend.Services.DAL
 {
     public class UserHashedService : IUserService
     {

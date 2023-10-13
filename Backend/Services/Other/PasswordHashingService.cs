@@ -1,6 +1,6 @@
-﻿using Backend.Services.DAL.Users.Interfaces;
+﻿using Backend.Services.Other.Interfaces;
 
-namespace Backend.Services.DAL.Users
+namespace Backend.Services.Other
 {
     public class PasswordHashingService : IPasswordHashingService
     {

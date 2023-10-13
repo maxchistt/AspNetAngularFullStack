@@ -4,7 +4,7 @@ using Backend.EF.Initial;
 using Backend.Models.Goods;
 using Backend.Models.Orders;
 using Backend.Models.Users;
-using Backend.Services.DAL.Users.Interfaces;
+using Backend.Services.Other.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 

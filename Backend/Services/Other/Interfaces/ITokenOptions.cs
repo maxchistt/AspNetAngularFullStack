@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
-namespace Backend.Services.BLL.Auth.Interfaces
+namespace Backend.Services.Other.Interfaces
 {
     public interface ITokenOptions
     {

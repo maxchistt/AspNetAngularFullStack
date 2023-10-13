@@ -1,7 +1,7 @@
 ﻿using Backend.Models.Users;
 using Backend.Shared.AuthParams;
 
-namespace Backend.Services.DAL.Users.Interfaces
+namespace Backend.Services.DAL.Interfaces
 {
     public interface IUserService
     {

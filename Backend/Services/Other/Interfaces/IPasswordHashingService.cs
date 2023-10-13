@@ -1,4 +1,4 @@
-﻿namespace Backend.Services.DAL.Users.Interfaces
+﻿namespace Backend.Services.Other.Interfaces
 {
     public interface IPasswordHashingService
     {

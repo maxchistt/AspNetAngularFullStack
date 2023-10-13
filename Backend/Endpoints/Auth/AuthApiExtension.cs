@@ -1,5 +1,5 @@
 ﻿using Backend.DTOs.Auth;
-using Backend.Services.BLL.Auth.Interfaces;
+using Backend.Services.BLL.Interfaces;
 
 namespace Backend.Endpoints.Auth
 {

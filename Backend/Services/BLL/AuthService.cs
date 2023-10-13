@@ -1,9 +1,10 @@
 ﻿using Backend.DTOs.Auth;
 using Backend.Models.Users;
-using Backend.Services.BLL.Auth.Interfaces;
-using Backend.Services.DAL.Users.Interfaces;
+using Backend.Services.BLL.Interfaces;
+using Backend.Services.DAL.Interfaces;
+using Backend.Services.Other.Interfaces;
 
-namespace Backend.Services.BLL.Auth
+namespace Backend.Services.BLL
 {
     public class AuthService : IAuthService
     {
