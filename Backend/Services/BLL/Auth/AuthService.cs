@@ -1,5 +1,5 @@
 ﻿using Backend.DTOs.Auth;
-using Backend.Models;
+using Backend.Models.Users;
 using Backend.Services.BLL.Auth.Interfaces;
 using Backend.Services.DAL.Users.Interfaces;
 

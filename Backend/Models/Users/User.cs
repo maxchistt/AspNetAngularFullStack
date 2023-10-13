@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Backend.Models.Orders;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Models
+namespace Backend.Models.Users
 {
     [Index(nameof(Email), IsUnique = true)]
     public class User
@@ -14,6 +15,8 @@ namespace Backend.Models
 
         public string Password { get; set; } = null!;
         public string Role { get; set; } = null!;
+
+        public ICollection<Order>? Orders { get; set; }
 
         public User()
         { }

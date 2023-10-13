@@ -1,4 +1,4 @@
-﻿using Backend.Models;
+﻿using Backend.Models.Users;
 using Backend.Shared.AuthParams;
 
 namespace Backend.EF.Initial
