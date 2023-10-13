@@ -1,3 +1,5 @@
+﻿#define RECREATE_DB
+
 using Backend.EF.Initial;
 using Backend.Models.Goods;
 using Backend.Models.Orders;
@@ -27,8 +29,19 @@ namespace Backend.EF.Context
 
         //
 
+#if DEBUG && RECREATE_DB
+        private static bool _wasRecreated = false;
+#endif
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+#if DEBUG && RECREATE_DB
+            if (!_wasRecreated)
+            {
+                base.Database.EnsureDeleted();
+                _wasRecreated = true;
+            }
+#endif
             bool created = base.Database.EnsureCreated();
             Console.WriteLine($"{nameof(DataContext)} connection created. EnsureCreated:{created}");
         }
