@@ -1,5 +1,5 @@
-﻿using Backend.Services.Users;
-using Backend.Services.Users.Interfaces;
+﻿using Backend.Services.DAL.Users;
+using Backend.Services.DAL.Users.Interfaces;
 
 namespace Backend.ServiceConfig
 {

@@ -1,9 +1,9 @@
-﻿using Backend.Services.Auth.Interfaces;
+﻿using Backend.Services.BLL.Auth.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Backend.Services.Auth
+namespace Backend.Services.BLL.Auth
 {
     public class TokenService : ITokenService
     {

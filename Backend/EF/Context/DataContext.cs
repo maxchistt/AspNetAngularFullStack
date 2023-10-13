@@ -1,6 +1,6 @@
 ﻿using Backend.EF.Initial;
 using Backend.Models;
-using Backend.Services.Users.Interfaces;
+using Backend.Services.DAL.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 

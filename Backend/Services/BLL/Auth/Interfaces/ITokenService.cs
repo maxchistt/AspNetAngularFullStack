@@ -1,4 +1,4 @@
-﻿namespace Backend.Services.Auth.Interfaces
+﻿namespace Backend.Services.BLL.Auth.Interfaces
 {
     public interface ITokenService
     {
