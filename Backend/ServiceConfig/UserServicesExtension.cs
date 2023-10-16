@@ -10,7 +10,7 @@ namespace Backend.ServiceConfig
         public static void AddUserServices(this IServiceCollection services)
         {
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
-            services.AddScoped<IUserService, UserHashedService>();
+            services.AddScoped<IUsersService, UsersHashedService>();
         }
     }
 }

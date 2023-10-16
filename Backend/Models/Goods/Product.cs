@@ -12,7 +12,7 @@ namespace Backend.Models.Goods
         [Required]
         public string Name { get; set; } = string.Empty;
 
-        public string? Description { get; set; }
+        public string? Description { get; set; } = null;
 
         [Required]
         public decimal Price { get; set; } = decimal.Zero;

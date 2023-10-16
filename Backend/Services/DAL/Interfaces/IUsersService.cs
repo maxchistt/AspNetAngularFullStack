@@ -3,7 +3,7 @@ using Backend.Shared.AuthParams;
 
 namespace Backend.Services.DAL.Interfaces
 {
-    public interface IUserService
+    public interface IUsersService
     {
         public bool UserExists(string email);
 

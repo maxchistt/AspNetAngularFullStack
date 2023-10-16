@@ -8,10 +8,10 @@ namespace Backend.Services.BLL
 {
     public class AuthService : IAuthService
     {
-        private IUserService userService;
+        private IUsersService userService;
         private ITokenService tokenService;
 
-        public AuthService(IUserService userService, ITokenService tokenService)
+        public AuthService(IUsersService userService, ITokenService tokenService)
         {
             this.userService = userService;
             this.tokenService = tokenService;

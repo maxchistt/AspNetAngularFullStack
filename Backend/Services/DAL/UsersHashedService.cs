@@ -6,12 +6,12 @@ using Backend.Shared.AuthParams;
 
 namespace Backend.Services.DAL
 {
-    public class UserHashedService : IUserService
+    public class UsersHashedService : IUsersService
     {
         private DataContext Context { get; }
         private IPasswordHashingService Hasher { get; }
 
-        public UserHashedService(DataContext dataContext, IPasswordHashingService hasher)
+        public UsersHashedService(DataContext dataContext, IPasswordHashingService hasher)
         {
             Context = dataContext;
             Hasher = hasher;

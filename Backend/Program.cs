@@ -1,4 +1,5 @@
 using Backend.Endpoints.Auth;
+using Backend.Endpoints.Goods;
 using Backend.Endpoints.TestEnpoints;
 using Backend.Endpoints.Weather;
 using Backend.ServiceConfig;
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenWithJWTAuth();
 builder.Services.AddUserServices();
 builder.Services.AddAuthServices(builder.Configuration);
+builder.Services.AddGoodsService();
 builder.Services.AddSqlServerDbContext(builder.Configuration);
 
 var app = builder.Build();
@@ -28,6 +30,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAuthEndpoints();
+app.MapGoodsEndpoints();
 
 app.MapWeatherForecast();
 app.MapTestEndpoints();
