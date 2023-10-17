@@ -1,5 +1,4 @@
 ﻿using Backend.Models.Goods;
-using System.Runtime.CompilerServices;
 
 namespace Backend.DTOs.Goods
 {
@@ -14,6 +13,6 @@ namespace Backend.DTOs.Goods
             Id = category.Id;
         }
 
-        public static explicit operator CategoryDTO(Category category)=>new CategoryDTO(category);
+        public static explicit operator CategoryDTO(Category category) => new CategoryDTO(category);
     }
 }

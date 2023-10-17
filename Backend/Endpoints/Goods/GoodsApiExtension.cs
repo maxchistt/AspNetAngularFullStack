@@ -1,6 +1,7 @@
 ﻿using Backend.DTOs.Goods;
-using Backend.DTOs.Other;
+using Backend.DTOs.GoodsFiltering;
 using Backend.Services.DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Endpoints.Goods
 {
@@ -13,7 +14,7 @@ namespace Backend.Endpoints.Goods
             builder.MapGet("/getgoods", async (IGoodsService goods) => await goods.GetGoodsAsync())
                .WithName("get goods");
 
-            builder.MapPost("/getgoods", async (GoodsFilteringParamsDTO filter, IGoodsService goods) => await goods.GetPaginatedGoodsAsync(filter))
+            builder.MapGet("/getgoods", async ([FromQuery] GoodsFilteringParamsDTO filter, IGoodsService goods) => await goods.GetPaginatedGoodsAsync(filter))
                .WithName("get goods with filter");
 
             builder.MapGet("/getcategories", async (IGoodsService goods) => await goods.GetCategoriesAsync())
@@ -32,9 +33,9 @@ namespace Backend.Endpoints.Goods
 
                 bool res = await goods.AddProductAsync(productModel);
 
-                ProductDTO productDTO = new ProductDTO() { Id=productModel.Id,Price=Pr };
+                var productDTO = (ProductWithCategoryDTO)productModel;
 
-                return Results.Json(data: productModel, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
+                return Results.Json(data: productDTO, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })
               .WithName("post product");
 
@@ -47,7 +48,9 @@ namespace Backend.Endpoints.Goods
 
                 bool res = await goods.AddCategoryAsync(categoryModel);
 
-                return Results.Json(data: categoryModel, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
+                var categoryDTO = (CategoryDTO)categoryModel;
+
+                return Results.Json(data: categoryDTO, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })
               .WithName("post category");
 

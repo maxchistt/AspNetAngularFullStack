@@ -1,4 +1,4 @@
-﻿using Backend.DTOs.Goods;
+﻿using Backend.DTOs.GoodsFiltering;
 using Backend.Models.Goods;
 using Backend.Shared.Other;
 

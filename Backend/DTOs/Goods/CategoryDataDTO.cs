@@ -15,6 +15,6 @@ namespace Backend.DTOs.Goods
             Name = category.Name;
         }
 
-        public static explicit operator CategoryDataDTO(Category category)=> new CategoryDataDTO(category);
+        public static explicit operator CategoryDataDTO(Category category) => new CategoryDataDTO(category);
     }
 }

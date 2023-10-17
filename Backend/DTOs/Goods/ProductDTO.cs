@@ -2,9 +2,9 @@
 
 namespace Backend.DTOs.Goods
 {
-    public record ProductDTO:ProductDataDTO
+    public record ProductDTO : ProductDataDTO
     {
-        public int Id { get; set;}
+        public int Id { get; set; }
 
         public ProductDTO() : base() { }
         public ProductDTO(Product product) : base(product)
@@ -12,6 +12,11 @@ namespace Backend.DTOs.Goods
             Id = product.Id;
         }
 
-        public static explicit operator ProductDTO(Product product) =>new ProductDTO(product);
+        public ProductDTO(ProductWithCategoryDTO product) : base(product as ProductDataWithCategoryDTO)
+        {
+            Id = product.Id;
+        }
+
+        public static explicit operator ProductDTO(Product product) => new ProductDTO(product);
     }
 }

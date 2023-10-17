@@ -1,4 +1,4 @@
-﻿using Backend.DTOs.Goods;
+﻿using Backend.DTOs.GoodsFiltering;
 using Backend.EF.Context;
 using Backend.EF.Extensions;
 using Backend.Models.Goods;
@@ -22,20 +22,20 @@ namespace Backend.Services.DAL
         {
             var query = Context.Goods.AsQueryable();
 
-            if (filter?.CategoryId is not null)
-                query = query.Where(p => p.CategoryId == filter.CategoryId.Value);
+            if (filter?.Categories?.CategoryId is not null)
+                query = query.Where(p => p.CategoryId == filter.Categories.CategoryId.Value);
 
-            if (filter?.orderBy is not null and not "")
+            if (filter?.Ordering?.OrderBy is not null and not "")
             {
                 var parameter = Expression.Parameter(typeof(Product), "x");
-                var property = Expression.Property(parameter, filter.orderBy);
+                var property = Expression.Property(parameter, filter.Ordering.OrderBy);
                 var lambda = Expression.Lambda(property, parameter);
 
                 query = query.OrderBy((Expression<Func<Product, object>>)lambda);
             }
 
-            if (filter?.PageIndex is not null && filter?.PageSize is not null)
-                query = query.GetPaginated(filter.PageIndex.Value, filter.PageSize.Value);
+            if (filter?.Pagination?.PageIndex is not null && filter?.Pagination?.PageSize is not null)
+                query = query.GetPaginated(filter.Pagination.PageIndex.Value, filter.Pagination.PageSize.Value);
 
             if (filter?.WithAmount ?? false)
                 query = query.Include(p => p.Inventory);
@@ -51,8 +51,8 @@ namespace Backend.Services.DAL
 
             await Task.WhenAll(totalItemCountTask, goodsTask);
 
-            int index = goodsFilteringParams.PageIndex.HasValue ? goodsFilteringParams.PageIndex.Value : 1;
-            int size = goodsFilteringParams.PageSize.HasValue ? goodsFilteringParams.PageSize.Value : totalItemCountTask.Result;
+            int index = goodsFilteringParams.Pagination?.PageIndex.HasValue??false ? goodsFilteringParams.Pagination.PageIndex.Value : 1;
+            int size = goodsFilteringParams.Pagination?.PageSize.HasValue??false ? goodsFilteringParams.Pagination.PageSize.Value : totalItemCountTask.Result;
 
             return new PaginatedList<Product>(goodsTask.Result, totalItemCountTask.Result, index, size);
         }

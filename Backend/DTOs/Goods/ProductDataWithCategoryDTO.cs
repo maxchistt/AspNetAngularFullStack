@@ -14,7 +14,6 @@ namespace Backend.DTOs.Goods
             if (product.Category is not null) Category = (CategoryDTO)product.Category;
         }
 
-        public static implicit operator ProductDataDTO(ProductDataWithCategoryDTO product)=> new ProductDataDTO() { CategoryId = product.Category.Id, Name = product.Name, Description = product.Description, Price = product.Price };
-        
+        public static implicit operator ProductDataDTO(ProductDataWithCategoryDTO product) => new ProductDataDTO(product);
     }
 }
