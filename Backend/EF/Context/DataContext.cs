@@ -1,4 +1,4 @@
-﻿#define RECREATE_DB
+﻿//#define RECREATE_DB
 
 using Backend.EF.Initial;
 using Backend.Models.Goods;
