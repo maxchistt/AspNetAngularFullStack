@@ -13,7 +13,7 @@ namespace Backend.Endpoints.Goods
             builder.MapGet("/getgoods", async (IGoodsService goods) => await goods.GetGoodsAsync())
                .WithName("get goods");
 
-            builder.MapPost("/getgoods", async (GoodsFilteringParamsDto filter, IGoodsService goods) => await goods.GetPaginatedGoodsAsync(filter))
+            builder.MapPost("/getgoods", async (GoodsFilteringParamsDTO filter, IGoodsService goods) => await goods.GetPaginatedGoodsAsync(filter))
                .WithName("get goods with filter");
 
             builder.MapGet("/getcategories", async (IGoodsService goods) => await goods.GetCategoriesAsync())
@@ -31,6 +31,8 @@ namespace Backend.Endpoints.Goods
                 };
 
                 bool res = await goods.AddProductAsync(productModel);
+
+                ProductDTO productDTO = new ProductDTO() { Id=productModel.Id,Price=Pr };
 
                 return Results.Json(data: productModel, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })

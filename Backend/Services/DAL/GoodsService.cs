@@ -1,9 +1,9 @@
 ﻿using Backend.DTOs.Goods;
-using Backend.DTOs.Other;
 using Backend.EF.Context;
 using Backend.EF.Extensions;
 using Backend.Models.Goods;
 using Backend.Services.DAL.Interfaces;
+using Backend.Shared.Other;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -18,7 +18,7 @@ namespace Backend.Services.DAL
 
         public Task<int> GetTotalCount() => Context.Goods.CountAsync();
 
-        public Task<List<Product>> GetGoodsAsync(GoodsFilteringParamsDto? filter = default)
+        public Task<List<Product>> GetGoodsAsync(GoodsFilteringParamsDTO? filter = default)
         {
             var query = Context.Goods.AsQueryable();
 
@@ -43,7 +43,7 @@ namespace Backend.Services.DAL
             return query.ToListAsync();
         }
 
-        public async Task<PaginatedListDTO<Product>> GetPaginatedGoodsAsync(GoodsFilteringParamsDto goodsFilteringParams)
+        public async Task<PaginatedList<Product>> GetPaginatedGoodsAsync(GoodsFilteringParamsDTO goodsFilteringParams)
         {
             var totalItemCountTask = GetTotalCount();
 
@@ -54,7 +54,7 @@ namespace Backend.Services.DAL
             int index = goodsFilteringParams.PageIndex.HasValue ? goodsFilteringParams.PageIndex.Value : 1;
             int size = goodsFilteringParams.PageSize.HasValue ? goodsFilteringParams.PageSize.Value : totalItemCountTask.Result;
 
-            return new PaginatedListDTO<Product>(goodsTask.Result, totalItemCountTask.Result, index, size);
+            return new PaginatedList<Product>(goodsTask.Result, totalItemCountTask.Result, index, size);
         }
 
         public Task<List<Category>> GetCategoriesAsync()

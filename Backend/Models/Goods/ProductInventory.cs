@@ -5,13 +5,13 @@ namespace Backend.Models.Goods
 {
     public class ProductInventory
     {
-        [ForeignKey(nameof(Product)), Key, Required]
+        [ForeignKey(nameof(Product)), Key]
         public int ProductId { get; set; }
 
         [Required]
         public int Amount { get; set; }
 
-        [ForeignKey(nameof(ProductId))]
+        [Required]
         public Product? Product { get; set; }
     }
 }

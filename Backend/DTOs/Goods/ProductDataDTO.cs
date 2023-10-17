@@ -1,18 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Backend.Models.Goods;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.DTOs.Goods
 {
-    public record ProductDataDTO
+    public record ProductDataDTO:ProductDataWithoutCategoryDTO
     {
-        [Required]
-        public string Name { get; set; } = string.Empty;
-
-        public string? Description { get; set; } = null;
+        
 
         [Required]
-        public decimal Price { get; set; } = decimal.Zero;
+        public int CategoryId { get; set; }
 
-        [Required]
-        public int CategoryId { get; set; } = 0;
+        public ProductDataDTO():base() { }
+        public ProductDataDTO(Product product):base(product)
+        {
+            CategoryId = product.CategoryId;
+        }
+
+        
     }
 }

@@ -23,6 +23,7 @@ namespace Backend.Models.Goods
         [ForeignKey(nameof(CategoryId))]
         public Category? Category { get; set; }
 
+        [Required]
         public ProductInventory? Inventory { get; set; }
 
         public ICollection<OrderLine>? OrderItems { get; set; }

@@ -1,16 +1,16 @@
 ﻿using Backend.DTOs.Goods;
-using Backend.DTOs.Other;
 using Backend.Models.Goods;
+using Backend.Shared.Other;
 
 namespace Backend.Services.DAL.Interfaces
 {
     public interface IGoodsService
     {
         Task<List<Category>> GetCategoriesAsync();
-        Task<List<Product>> GetGoodsAsync(GoodsFilteringParamsDto? filter = null);
+        Task<List<Product>> GetGoodsAsync(GoodsFilteringParamsDTO? filter = null);
         Task<ProductInventory?> GetInventoryAsync(int productId);
         Task<ProductInventory?> GetInventoryAsync(Product product);
-        Task<PaginatedListDTO<Product>> GetPaginatedGoodsAsync(GoodsFilteringParamsDto goodsFilteringParams);
+        Task<PaginatedList<Product>> GetPaginatedGoodsAsync(GoodsFilteringParamsDTO goodsFilteringParams);
         Task<int> GetTotalCount();
         Task LoadInventoryAsync(Product product);
 
