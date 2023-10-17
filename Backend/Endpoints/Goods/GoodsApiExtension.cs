@@ -14,7 +14,7 @@ namespace Backend.Endpoints.Goods
             builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
                .WithName("get all goods");
 
-            builder.MapGet("/getgoods", async ([FromQuery] GoodsFilteringParamsDTO filter, IGoodsService goods) => (await goods.GetGoodsAsync(filter)).Select(p => (ProductWithAmountDTO)p))
+            builder.MapGet("/getgoods", async ([FromBody] GoodsFilteringParamsDTO filter, IGoodsService goods) => (await goods.GetGoodsAsync(filter)).Select(p => (ProductWithAmountDTO)p))
                .WithName("get goods with filter");
 
             builder.MapGet("/getcategories", async (IGoodsService goods) => (await goods.GetCategoriesAsync()).Select(c => (CategoryDTO)c))
@@ -33,11 +33,11 @@ namespace Backend.Endpoints.Goods
 
                 bool res = await goods.AddProductAsync(productModel);
 
-                var productDTO = (ProductWithCategoryDTO)productModel;
+                var productDTO = (ProductWithAmountDTO)productModel;
 
                 return Results.Json(data: productDTO, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })
-                .Produces<ProductWithCategoryDTO>(statusCode: StatusCodes.Status201Created)
+                .Produces<ProductWithAmountDTO>(statusCode: StatusCodes.Status201Created)
                 .WithName("post product");
 
             builder.MapPost("/postcategory", async (CategoryDataDTO category, IGoodsService goods) =>
