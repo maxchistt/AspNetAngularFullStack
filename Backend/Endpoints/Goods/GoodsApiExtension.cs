@@ -11,13 +11,13 @@ namespace Backend.Endpoints.Goods
         {
             var builder = app.MapGroup(authRouteBase);
 
-            builder.MapGet("/getgoods", async (IGoodsService goods) => await goods.GetGoodsAsync())
-               .WithName("get goods");
+            builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
+               .WithName("get all goods");
 
-            builder.MapGet("/getgoods", async ([FromQuery] GoodsFilteringParamsDTO filter, IGoodsService goods) => await goods.GetPaginatedGoodsAsync(filter))
+            builder.MapGet("/getgoods", async ([FromQuery] GoodsFilteringParamsDTO filter, IGoodsService goods) => (await goods.GetGoodsAsync(filter)).Select(p => (ProductWithAmountDTO)p))
                .WithName("get goods with filter");
 
-            builder.MapGet("/getcategories", async (IGoodsService goods) => await goods.GetCategoriesAsync())
+            builder.MapGet("/getcategories", async (IGoodsService goods) => (await goods.GetCategoriesAsync()).Select(c => (CategoryDTO)c))
                .WithName("get categories");
 
             builder.MapPost("/postproduct", async (ProductDataDTO product, IGoodsService goods) =>
@@ -37,7 +37,8 @@ namespace Backend.Endpoints.Goods
 
                 return Results.Json(data: productDTO, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })
-              .WithName("post product");
+                .Produces<ProductWithCategoryDTO>(statusCode: StatusCodes.Status201Created)
+                .WithName("post product");
 
             builder.MapPost("/postcategory", async (CategoryDataDTO category, IGoodsService goods) =>
             {
@@ -52,7 +53,8 @@ namespace Backend.Endpoints.Goods
 
                 return Results.Json(data: categoryDTO, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })
-              .WithName("post category");
+                .Produces<CategoryDTO>(statusCode: StatusCodes.Status201Created)
+                .WithName("post category");
 
             builder
                 .WithTags("goods")
