@@ -14,11 +14,11 @@ namespace Backend.Endpoints.Goods
             builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
                .WithName("get all goods");
 
-            builder.MapGet("/getgoods/", async ([FromQuery] int CategoryId, IGoodsService goods) =>
+            builder.MapGet("/getgoods/", async ([FromQuery] int CategoryId, [FromQuery] int[]? CategoriesList, IGoodsService goods) =>
             {
                 GoodsFilteringParamsDTO filter = new()
                 {
-                    Categories = new(CategoryId, null),
+                    Categories = new(CategoryId, CategoriesList),
                     //WithAmount = WithAmount ?? false,
                 };
 
