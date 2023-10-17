@@ -2,7 +2,7 @@
 
 namespace Backend.DTOs.Goods
 {
-    public record ProductWithAmountDTO:ProductDTO
+    public record ProductWithAmountDTO : ProductDTO
     {
         int Amount { get; set; } = 0;
         public ProductWithAmountDTO() : base() { }

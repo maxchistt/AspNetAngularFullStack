@@ -10,7 +10,7 @@ namespace Backend.EF.Extensions
         public static IQueryable<TSource> GetPaginated<TSource, TKey>(this IQueryable<TSource> query, int pageIndex, int pageSize, Expression<Func<TSource, TKey>> orderByExpression) where TSource : class
             => query
                 .OrderBy(orderByExpression) // You can order by any property you prefer
-                .GetPaginated<TSource>(pageIndex,pageSize);
+                .GetPaginated<TSource>(pageIndex, pageSize);
 
         public static IQueryable<TSource> GetPaginated<TSource>(this IQueryable<TSource> query, int pageIndex, int pageSize) where TSource : class
             => query

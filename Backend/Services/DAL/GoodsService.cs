@@ -51,8 +51,8 @@ namespace Backend.Services.DAL
 
             await Task.WhenAll(totalItemCountTask, goodsTask);
 
-            int index = goodsFilteringParams.Pagination?.PageIndex.HasValue??false ? goodsFilteringParams.Pagination.PageIndex.Value : 1;
-            int size = goodsFilteringParams.Pagination?.PageSize.HasValue??false ? goodsFilteringParams.Pagination.PageSize.Value : totalItemCountTask.Result;
+            int index = goodsFilteringParams.Pagination?.PageIndex.HasValue ?? false ? goodsFilteringParams.Pagination.PageIndex.Value : 1;
+            int size = goodsFilteringParams.Pagination?.PageSize.HasValue ?? false ? goodsFilteringParams.Pagination.PageSize.Value : totalItemCountTask.Result;
 
             return new PaginatedList<Product>(goodsTask.Result, totalItemCountTask.Result, index, size);
         }
@@ -90,8 +90,6 @@ namespace Backend.Services.DAL
                 return true;
             }
             catch { return false; }
-
-
         }
 
         public async Task<bool> AddProductAsync(Product product)
@@ -103,7 +101,6 @@ namespace Backend.Services.DAL
                 return true;
             }
             catch { return false; }
-
         }
     }
 }
