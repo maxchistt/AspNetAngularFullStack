@@ -14,7 +14,11 @@ namespace Backend.Endpoints.Goods
             builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
                .WithName("get all goods");
 
-            builder.MapGet("/getgoods", async ([FromBody] GoodsFilteringParamsDTO filter, IGoodsService goods) => (await goods.GetGoodsAsync(filter)).Select(p => (ProductWithAmountDTO)p))
+            builder.MapGet("/getgoods/", async ([FromQuery] GoodsFilteringParamsDTO filter, IGoodsService goods) =>
+            {
+                var res = await goods.GetGoodsAsync(filter);
+                return Results.Json(res.Select(p => (ProductWithAmountDTO)p), statusCode: StatusCodes.Status200OK);
+            })
                .WithName("get goods with filter");
 
             builder.MapGet("/getcategories", async (IGoodsService goods) => (await goods.GetCategoriesAsync()).Select(c => (CategoryDTO)c))
