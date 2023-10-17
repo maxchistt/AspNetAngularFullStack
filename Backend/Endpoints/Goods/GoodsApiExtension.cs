@@ -13,7 +13,7 @@ namespace Backend.Endpoints.Goods
             builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
                .WithName("get all goods");
 
-            builder.MapGet("/getgoods/", async (int CategoryId, int[]? CategoriesList, IGoodsService goods) =>
+            builder.MapGet("/getgoods/", async (int? CategoryId, int[]? CategoriesList, IGoodsService goods) =>
             {
                 GoodsFilteringParamsDTO filter = new()
                 {
