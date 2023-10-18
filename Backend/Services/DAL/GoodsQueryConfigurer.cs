@@ -37,10 +37,9 @@ namespace Backend.Services.DAL
                 var expression = ExpressionParcer.GetExpression(OrderingProperty);
 
                 if (expression is not null)
-                    query = query.OrderBy(expression);
-
-                if (queryParams?.Ordering?.OrderByDescending is true)
-                    query = query.OrderDescending();
+                    query = (queryParams?.Ordering?.OrderByDescending is true)
+                        ? query.OrderBy(expression)
+                        : query.OrderByDescending(expression);
             }
 
             return query;
