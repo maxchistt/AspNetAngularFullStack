@@ -7,6 +7,7 @@ namespace Backend.ServiceConfig
     {
         public static void AddGoodsService(this IServiceCollection services)
         {
+            services.AddSingleton<IGoodsQueryConfigurer, GoodsQueryConfigurer>();
             services.AddScoped<IGoodsService, GoodsService>();
         }
     }

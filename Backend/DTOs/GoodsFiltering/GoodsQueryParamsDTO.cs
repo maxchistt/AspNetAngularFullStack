@@ -1,6 +1,6 @@
 ﻿namespace Backend.DTOs.GoodsFiltering
 {
-    public record GoodsFilteringParamsDTO(
+    public record GoodsQueryParamsDTO(
         string? NameSearch = null,
         CategoriesFilteringDTO? Categories = null,
         PriceFilteringDTO? Price = null,

@@ -1,58 +1,60 @@
 ﻿using Backend.DTOs.GoodsFiltering;
 using Backend.EF.Context;
-using Backend.EF.Extensions;
 using Backend.Models.Goods;
 using Backend.Services.DAL.Interfaces;
 using Backend.Shared.Other;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Backend.Services.DAL
 {
     public class GoodsService : IGoodsService
     {
         private DataContext Context { get; }
+        private IGoodsQueryConfigurer QueryConfigurer { get; }
 
-        public GoodsService(DataContext context)
-        { Context = context; }
+        public GoodsService(DataContext context, IGoodsQueryConfigurer queryConfigurer)
+        {
+            Context = context;
+            QueryConfigurer = queryConfigurer;
+        }
 
-        public Task<int> GetTotalCount() => Context.Goods.CountAsync();
-
-        public Task<List<Product>> GetGoodsAsync(GoodsFilteringParamsDTO? filter = default)
+        public Task<int> GetTotalCount(GoodsQueryParamsDTO queryParams)
         {
             var query = Context.Goods.AsQueryable();
 
-            if (filter?.Categories?.CategoryId is not null)
-                query = query.Where(p => p.CategoryId == filter.Categories.CategoryId.Value);
-
-            if (filter?.Ordering?.OrderBy is not null and not "")
+            if (queryParams is not null)
             {
-                var parameter = Expression.Parameter(typeof(Product), "x");
-                var property = Expression.Property(parameter, filter.Ordering.OrderBy);
-                var lambda = Expression.Lambda(property, parameter);
-
-                query = query.OrderBy((Expression<Func<Product, object>>)lambda);
+                query = QueryConfigurer.GetFilteredQuery(query, queryParams);
             }
 
-            if (filter?.Pagination?.PageIndex is not null && filter?.Pagination?.PageSize is not null)
-                query = query.GetPaginated(filter.Pagination.PageIndex.Value, filter.Pagination.PageSize.Value);
+            return query.CountAsync();
+        }
 
-            if (filter?.WithAmount ?? false)
-                query = query.Include(p => p.Inventory);
+        public Task<List<Product>> GetGoodsAsync(GoodsQueryParamsDTO? queryParams = default)
+        {
+            var query = Context.Goods.AsQueryable();
+
+            if (queryParams is not null)
+            {
+                query = QueryConfigurer.GetFilteredQuery(query, queryParams);
+                query = QueryConfigurer.GetOrderedQuery(query, queryParams);
+                query = QueryConfigurer.GetIncludedQuery(query, queryParams);
+                query = QueryConfigurer.GetPaginatedQuery(query, queryParams);
+            }
 
             return query.ToListAsync();
         }
 
-        public async Task<PaginatedList<Product>> GetPaginatedGoodsAsync(GoodsFilteringParamsDTO goodsFilteringParams)
+        public async Task<PaginatedList<Product>> GetPaginatedGoodsAsync(GoodsQueryParamsDTO queryParams)
         {
-            var totalItemCountTask = GetTotalCount();
+            var totalItemCountTask = GetTotalCount(queryParams);
 
-            var goodsTask = GetGoodsAsync(goodsFilteringParams);
+            var goodsTask = GetGoodsAsync(queryParams);
 
             await Task.WhenAll(totalItemCountTask, goodsTask);
 
-            int index = goodsFilteringParams.Pagination?.PageIndex.HasValue ?? false ? goodsFilteringParams.Pagination.PageIndex.Value : 1;
-            int size = goodsFilteringParams.Pagination?.PageSize.HasValue ?? false ? goodsFilteringParams.Pagination.PageSize.Value : totalItemCountTask.Result;
+            int index = queryParams.Pagination?.PageIndex.HasValue ?? false ? queryParams.Pagination.PageIndex.Value : 1;
+            int size = queryParams.Pagination?.PageSize.HasValue ?? false ? queryParams.Pagination.PageSize.Value : totalItemCountTask.Result;
 
             return new PaginatedList<Product>(goodsTask.Result, totalItemCountTask.Result, index, size);
         }
@@ -101,6 +103,11 @@ namespace Backend.Services.DAL
                 return true;
             }
             catch { return false; }
+        }
+
+        public async Task<Product?> GetProductAsync(int productId)
+        {
+            return await Context.Goods.FindAsync(productId);
         }
     }
 }

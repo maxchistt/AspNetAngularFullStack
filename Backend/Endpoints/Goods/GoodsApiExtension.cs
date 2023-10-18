@@ -10,24 +10,51 @@ namespace Backend.Endpoints.Goods
         {
             var builder = app.MapGroup(authRouteBase);
 
-            builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
-               .WithName("get all goods");
-
-            builder.MapGet("/getgoods/", async (int? CategoryId, int[]? CategoriesList, IGoodsService goods) =>
+            builder.MapGet("/goods/{id}", async (int id, IGoodsService goods) =>
             {
-                GoodsFilteringParamsDTO filter = new()
-                {
-                    Categories = new(CategoryId, CategoriesList),
-                    //WithAmount = WithAmount ?? false,
-                };
+                var res = await goods.GetProductAsync(id);
+                return res is not null
+                    ? Results.Ok((ProductWithAmountDTO)res)
+                    : Results.NotFound();
+            })
+                .Produces<ProductWithAmountDTO>()
+                .WithName("get product by id");
+
+            builder.MapGet("/getallgoods", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
+                .Produces<IEnumerable<ProductWithAmountDTO>>()
+                .WithName("get all goods");
+
+            builder.MapGet("/goods", async (
+                string? NameSearch,
+                int? CategoryId,
+                int[]? CategoriesList,
+                decimal? MinPrice,
+                decimal? MaxPrice,
+                string? OrderBy,
+                bool? OrderByDescending,
+                int? PageIndex,
+                int? PageSize,
+                bool? WithAmount,
+                IGoodsService goods
+            ) =>
+            {
+                GoodsQueryParamsDTO filter = new(
+                    NameSearch: NameSearch,
+                    Categories: new(CategoryId, CategoriesList),
+                    Price: new(MinPrice, MaxPrice),
+                    Ordering: new(OrderBy, OrderByDescending ?? false),
+                    Pagination: new(PageIndex, PageSize),
+                    WithAmount: WithAmount ?? false
+                );
 
                 var res = await goods.GetGoodsAsync(filter);
                 return Results.Json(res.Select(p => (ProductWithAmountDTO)p), statusCode: StatusCodes.Status200OK);
             })
-               .WithName("get goods with filter");
+                .Produces<IEnumerable<ProductWithAmountDTO>>()
+                .WithName("get goods with filter");
 
-            builder.MapGet("/getcategories", async (IGoodsService goods) => (await goods.GetCategoriesAsync()).Select(c => (CategoryDTO)c))
-               .WithName("get categories");
+            builder.MapGet("/categories", async (IGoodsService goods) => (await goods.GetCategoriesAsync()).Select(c => (CategoryDTO)c))
+                .WithName("get categories");
 
             builder.MapPost("/postproduct", async (ProductDataDTO product, IGoodsService goods) =>
             {
