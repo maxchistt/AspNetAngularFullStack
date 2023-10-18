@@ -31,6 +31,7 @@ app.UseAuthorization();
 
 app.MapAuthEndpoints();
 app.MapGoodsEndpoints();
+app.MapCategoriesEndpoints();
 
 app.MapWeatherForecast();
 app.MapTestEndpoints();

@@ -1,10 +1,10 @@
 ﻿using Backend.DTOs.GoodsFiltering;
 using Backend.EF.Extensions;
 using Backend.Models.Goods;
-using Backend.Services.DAL.Interfaces;
+using Backend.Services.DAL.Auxiliary.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Services.DAL
+namespace Backend.Services.DAL.Auxiliary
 {
     public class GoodsQueryConfigurer : IGoodsQueryConfigurer
     {
@@ -37,7 +37,7 @@ namespace Backend.Services.DAL
                 var expression = ExpressionParcer.GetExpression(OrderingProperty);
 
                 if (expression is not null)
-                    query = (queryParams?.Ordering?.OrderByDescending is true)
+                    query = queryParams?.Ordering?.OrderByDescending is true
                         ? query.OrderBy(expression)
                         : query.OrderByDescending(expression);
             }

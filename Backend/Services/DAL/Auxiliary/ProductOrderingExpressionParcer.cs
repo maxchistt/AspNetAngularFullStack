@@ -1,8 +1,8 @@
 ﻿using Backend.Models.Goods;
-using Backend.Services.DAL.Interfaces;
+using Backend.Services.DAL.Auxiliary.Interfaces;
 using System.Linq.Expressions;
 
-namespace Backend.Services.DAL
+namespace Backend.Services.DAL.Auxiliary
 {
     public class ProductOrderingExpressionParcer : IProductOrderingExpressionParcer
     {

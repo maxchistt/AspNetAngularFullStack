@@ -1,7 +1,7 @@
 ﻿using Backend.DTOs.GoodsFiltering;
 using Backend.Models.Goods;
 
-namespace Backend.Services.DAL.Interfaces
+namespace Backend.Services.DAL.Auxiliary.Interfaces
 {
     public interface IGoodsQueryConfigurer
     {
