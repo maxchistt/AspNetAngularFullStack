@@ -3,54 +3,28 @@ using Backend.EF.Extensions;
 using Backend.Models.Goods;
 using Backend.Services.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Backend.Services.DAL
 {
     public class GoodsQueryConfigurer : IGoodsQueryConfigurer
     {
-        private IQueryable<Product> FilterByCategory(IQueryable<Product> query, CategoriesFilteringDTO categories)
+        private IProductOrderingExpressionParcer ExpressionParcer { get; }
+        private IGoodsQueryFiltering QueryFiltering { get; }
+
+        public GoodsQueryConfigurer(IProductOrderingExpressionParcer parcer, IGoodsQueryFiltering filtering)
         {
-            if (categories.CategoriesIdList is null && categories.CategoryId is null) return query;
-
-            IEnumerable<int> idList = categories.CategoriesIdList ?? Enumerable.Empty<int>();
-
-            if (categories.CategoryId.HasValue && !idList.Contains(categories.CategoryId.Value))
-                idList = idList.Append(categories.CategoryId.Value);
-
-            if (idList.Count() > 1)
-            {
-                query = query.Where(p => idList.Contains(p.CategoryId));
-            }
-            else if (idList.Count() > 0)
-            {
-                query = query.Where(p => p.CategoryId == idList.First());
-            }
-            return query;
-        }
-
-        private IQueryable<Product> FilterByPrice(IQueryable<Product> query, PriceFilteringDTO price)
-        {
-            if (price.MaxPrice.HasValue)
-                query = query.Where(p => p.Price <= price.MaxPrice.Value);
-            if (price.MinPrice.HasValue)
-                query = query.Where(p => p.Price >= price.MinPrice.Value);
-            return query;
-        }
-
-        private IQueryable<Product> FilterByName(IQueryable<Product> query, string nameSearch)
-        {
-            return query.Where(p => p.Name.Contains(nameSearch));
+            ExpressionParcer = parcer;
+            QueryFiltering = filtering;
         }
 
         public IQueryable<Product> GetFilteredQuery(IQueryable<Product> query, GoodsQueryParamsDTO queryParams)
         {
             if (queryParams.Categories is not null)
-                query = FilterByCategory(query, queryParams.Categories);
+                query = QueryFiltering.FilterByCategory(query, queryParams.Categories);
             if (!string.IsNullOrEmpty(queryParams.NameSearch))
-                query = FilterByName(query, queryParams.NameSearch);
+                query = QueryFiltering.FilterByName(query, queryParams.NameSearch);
             if (queryParams.Price is not null)
-                query = FilterByPrice(query, queryParams.Price);
+                query = QueryFiltering.FilterByPrice(query, queryParams.Price);
             return query;
         }
 
@@ -60,15 +34,13 @@ namespace Backend.Services.DAL
             {
                 string OrderingProperty = queryParams.Ordering.OrderBy;
 
-                var parameter = Expression.Parameter(typeof(Product), "x");
-                var property = Expression.Property(parameter, OrderingProperty);
-                var lambda = Expression.Lambda(property, parameter);
+                var expression = ExpressionParcer.GetExpression(OrderingProperty);
 
-                query = query.OrderBy((Expression<Func<Product, object>>)lambda);
-            }
-            if (queryParams?.Ordering?.OrderByDescending is true)
-            {
-                query = query.OrderDescending();
+                if (expression is not null)
+                    query = query.OrderBy(expression);
+
+                if (queryParams?.Ordering?.OrderByDescending is true)
+                    query = query.OrderDescending();
             }
 
             return query;
