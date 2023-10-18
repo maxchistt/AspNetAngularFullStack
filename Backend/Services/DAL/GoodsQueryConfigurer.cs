@@ -9,11 +9,9 @@ namespace Backend.Services.DAL
 {
     public class GoodsQueryConfigurer : IGoodsQueryConfigurer
     {
-        public IQueryable<Product> GetFilteredQuery(IQueryable<Product> query, GoodsQueryParamsDTO queryParams)
+        private IQueryable<Product> FilterByCategory(IQueryable<Product> query, CategoriesFilteringDTO categories)
         {
-            if (queryParams?.Categories?.CategoriesIdList is null && queryParams?.Categories?.CategoryId is null) return query;
-
-            CategoriesFilteringDTO categories = queryParams.Categories;
+            if (categories.CategoriesIdList is null && categories.CategoryId is null) return query;
 
             IEnumerable<int> idList = categories.CategoriesIdList ?? Enumerable.Empty<int>();
 
@@ -31,12 +29,39 @@ namespace Backend.Services.DAL
             return query;
         }
 
+        private IQueryable<Product> FilterByPrice(IQueryable<Product> query, PriceFilteringDTO price)
+        {
+            if (price.MaxPrice.HasValue)
+                query = query.Where(p => p.Price <= price.MaxPrice.Value);
+            if (price.MinPrice.HasValue)
+                query = query.Where(p => p.Price >= price.MinPrice.Value);
+            return query;
+        }
+
+        private IQueryable<Product> FilterByName(IQueryable<Product> query, string nameSearch)
+        {
+            return query.Where(p => p.Name.Contains(nameSearch));
+        }
+
+        public IQueryable<Product> GetFilteredQuery(IQueryable<Product> query, GoodsQueryParamsDTO queryParams)
+        {
+            if (queryParams.Categories is not null)
+                query = FilterByCategory(query, queryParams.Categories);
+            if (!string.IsNullOrEmpty(queryParams.NameSearch))
+                query = FilterByName(query, queryParams.NameSearch);
+            if (queryParams.Price is not null)
+                query = FilterByPrice(query, queryParams.Price);
+            return query;
+        }
+
         public IQueryable<Product> GetOrderedQuery(IQueryable<Product> query, GoodsQueryParamsDTO queryParams)
         {
             if (!string.IsNullOrEmpty(queryParams?.Ordering?.OrderBy))
             {
+                string OrderingProperty = queryParams.Ordering.OrderBy;
+
                 var parameter = Expression.Parameter(typeof(Product), "x");
-                var property = Expression.Property(parameter, queryParams.Ordering.OrderBy);
+                var property = Expression.Property(parameter, OrderingProperty);
                 var lambda = Expression.Lambda(property, parameter);
 
                 query = query.OrderBy((Expression<Func<Product, object>>)lambda);
