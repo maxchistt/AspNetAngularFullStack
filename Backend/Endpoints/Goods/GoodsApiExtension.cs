@@ -7,6 +7,34 @@ namespace Backend.Endpoints.Goods
 {
     public static class GoodsApiExtension
     {
+        private static Delegate FiltringQueryHandler<T_Service>(Func<GoodsQueryParamsDTO, T_Service, Task<IResult>> handler) where T_Service : class =>
+            async (T_Service service, string? NameSearch, int? CategoryId, int[]? CategoriesList, decimal? MinPrice, decimal? MaxPrice, string? OrderBy, bool? OrderByDescending, int? PageIndex, int? PageSize, bool? WithAmount) =>
+                await handler(
+                    new(
+                        NameSearch: NameSearch,
+                        Categories: new(CategoryId, CategoriesList),
+                        Price: new(MinPrice, MaxPrice),
+                        Ordering: new(OrderBy, OrderByDescending ?? false),
+                        Pagination: new(PageIndex, PageSize),
+                        WithAmount: WithAmount ?? false
+                    ),
+                    service
+                );
+        private static Delegate FiltringQueryHandler<T_Service1, T_Service2>(Func<GoodsQueryParamsDTO, T_Service1, T_Service2, Task<IResult>> handler) where T_Service1 : class where T_Service2 :class =>
+            async (T_Service1 service1, T_Service2 service2, string? NameSearch, int? CategoryId, int[]? CategoriesList, decimal? MinPrice, decimal? MaxPrice, string? OrderBy, bool? OrderByDescending, int? PageIndex, int? PageSize, bool? WithAmount) =>
+                await handler(
+                    new(
+                        NameSearch: NameSearch,
+                        Categories: new(CategoryId, CategoriesList),
+                        Price: new(MinPrice, MaxPrice),
+                        Ordering: new(OrderBy, OrderByDescending ?? false),
+                        Pagination: new(PageIndex, PageSize),
+                        WithAmount: WithAmount ?? false
+                    ),
+                    service1,
+                    service2
+                );
+
         public static RouteGroupBuilder MapGoodsEndpoints(this WebApplication app, string authRouteBase = "/api/goods")
         {
             var builder = app.MapGroup(authRouteBase);
