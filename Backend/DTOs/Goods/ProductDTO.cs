@@ -12,11 +12,6 @@ namespace Backend.DTOs.Goods
             Id = product.Id;
         }
 
-        public ProductDTO(ProductWithCategoryDTO product) : base(product as ProductDataWithCategoryDTO)
-        {
-            Id = product.Id;
-        }
-
         public static explicit operator ProductDTO(Product product) => new ProductDTO(product);
     }
 }

@@ -15,10 +15,10 @@ namespace Backend.Endpoints.Goods
             {
                 var res = await goods.GetProductAsync(id);
                 return res is not null
-                    ? Results.Ok((ProductWithAmountDTO)res)
+                    ? Results.Ok((ProductDTO)res)
                     : Results.NotFound();
             })
-                .Produces<ProductWithAmountDTO>()
+                .Produces<ProductDTO>()
                 .WithName("get product by id");
 
             builder.MapGet("/", async (
@@ -45,9 +45,9 @@ namespace Backend.Endpoints.Goods
                 );
 
                 var notPaginatedRes = await goods.GetGoodsAsync(filter);
-                return Results.Json(notPaginatedRes.Select(p => (ProductWithAmountDTO)p), statusCode: StatusCodes.Status200OK);
+                return Results.Json(notPaginatedRes.Select(p => (ProductDTO)p), statusCode: StatusCodes.Status200OK);
             })
-                .Produces<IEnumerable<ProductWithAmountDTO>>()
+                .Produces<IEnumerable<ProductDTO>>()
                 .WithName("get goods with filter");
 
             builder.MapGet("/paginated", async (
@@ -74,13 +74,13 @@ namespace Backend.Endpoints.Goods
                 );
 
                 var paginatedRes = await goods.GetPaginatedGoodsAsync(filter);
-                return Results.Json(new PaginatedList<ProductWithAmountDTO>(paginatedRes.Items.Select(p => (ProductWithAmountDTO)p), paginatedRes.TotalItemsCount, paginatedRes.PageIndex, paginatedRes.PageSize), statusCode: StatusCodes.Status200OK);
+                return Results.Json(new PaginatedList<ProductDTO>(paginatedRes.Items.Select(p => (ProductDTO)p), paginatedRes.TotalItemsCount, paginatedRes.PageIndex, paginatedRes.PageSize), statusCode: StatusCodes.Status200OK);
             })
-                .Produces<PaginatedList<ProductWithAmountDTO>>()
+                .Produces<PaginatedList<ProductDTO>>()
                 .WithName("get paginated goods with filter");
 
-            builder.MapGet("/getall", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductWithAmountDTO)p))
-                .Produces<IEnumerable<ProductWithAmountDTO>>()
+            builder.MapGet("/getall", async (IGoodsService goods) => (await goods.GetGoodsAsync()).Select(p => (ProductDTO)p))
+                .Produces<IEnumerable<ProductDTO>>()
                 .WithName("get all goods");
 
             builder.MapPost("/create", async (ProductDataDTO product, IGoodsService goods) =>
@@ -96,11 +96,11 @@ namespace Backend.Endpoints.Goods
 
                 bool res = await goods.AddProductAsync(productModel);
 
-                var productDTO = (ProductWithAmountDTO)productModel;
+                var productDTO = (ProductDTO)productModel;
 
                 return Results.Json(data: productDTO, statusCode: res ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
             })
-                .Produces<ProductWithAmountDTO>(statusCode: StatusCodes.Status201Created)
+                .Produces<ProductDTO>(statusCode: StatusCodes.Status201Created)
                 .WithName("post product");
 
             builder
