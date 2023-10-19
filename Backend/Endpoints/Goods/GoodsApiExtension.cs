@@ -11,9 +11,9 @@ namespace Backend.Endpoints.Goods
         {
             var builder = app.MapGroup(authRouteBase);
 
-            builder.MapGet("/{id}", async (int id, IGoodsService goods) =>
+            builder.MapGet("/{id}", async (int id, bool? withAmount, IGoodsService goods) =>
             {
-                var res = await goods.GetProductAsync(id);
+                var res = await goods.GetProductAsync(id, withAmount ?? false);
                 return res is not null
                     ? Results.Ok((ProductDTO)res)
                     : Results.NotFound();

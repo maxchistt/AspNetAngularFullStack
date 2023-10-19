@@ -104,9 +104,11 @@ namespace Backend.Services.DAL
             catch { return false; }
         }
 
-        public async Task<Product?> GetProductAsync(int productId)
+        public async Task<Product?> GetProductAsync(int productId, bool withAmount = false)
         {
-            return await Context.Goods.FindAsync(productId);
+            var query = Context.Goods.AsQueryable();
+            if (withAmount) query = query.Include(p => p.Inventory);
+            return await query.FirstOrDefaultAsync(p => p.Id == productId);
         }
     }
 }

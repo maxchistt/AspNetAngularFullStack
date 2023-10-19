@@ -10,7 +10,7 @@ namespace Backend.Services.DAL.Interfaces
 
         Task<List<Product>> GetGoodsAsync(GoodsQueryParamsDTO? queryParams = null);
 
-        Task<Product?> GetProductAsync(int productId);
+        Task<Product?> GetProductAsync(int productId, bool withAmount = false);
 
         Task<ProductInventory?> GetInventoryAsync(int productId);
 
