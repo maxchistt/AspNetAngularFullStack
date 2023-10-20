@@ -3,7 +3,7 @@ using Backend.Services.BLL.Interfaces;
 
 namespace Backend.Endpoints.Auth
 {
-    public static class AuthApiExtension
+    public static class AuthApi
     {
         public static RouteGroupBuilder MapAuthEndpoints(this WebApplication app, string authRouteBase = "/api/auth")
         {

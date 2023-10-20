@@ -2,7 +2,7 @@
 
 namespace Backend.Endpoints.Weather
 {
-    public static class WeatherForecastExtension
+    public static class WeatherForecastApi
     {
         private static string[] summaries = new[]
         {

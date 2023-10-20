@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Endpoints.TestEnpoints
 {
-    public static class TestEndpointsExtension
+    public static class TestEndpointsApi
     {
         public static RouteGroupBuilder MapTestEndpoints(this WebApplication app, string authRouteBase = "/api")
         {

@@ -4,7 +4,7 @@ using Backend.Shared.Other;
 
 namespace Backend.Endpoints.Goods
 {
-    public static class CategoriesApiExtension
+    public static class CategoriesApi
     {
         public static RouteGroupBuilder MapCategoriesEndpoints(this WebApplication app, string authRouteBase = "/api/categories")
         {
