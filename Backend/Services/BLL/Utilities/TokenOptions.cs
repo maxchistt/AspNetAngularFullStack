@@ -1,8 +1,8 @@
-﻿using Backend.Services.Other.Interfaces;
+﻿using Backend.Services.BLL.Utilities.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Backend.Services.Other
+namespace Backend.Services.BLL.Utilities
 {
     public class TokenOptions : ITokenOptions
     {

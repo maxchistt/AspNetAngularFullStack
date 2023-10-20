@@ -1,4 +1,4 @@
-﻿namespace Backend.Services.Other.Interfaces
+﻿namespace Backend.Services.BLL.Utilities.Interfaces
 {
     public interface ITokenService
     {

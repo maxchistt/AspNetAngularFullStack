@@ -1,8 +1,8 @@
 ﻿using Backend.DTOs.Auth;
 using Backend.Models.Users;
 using Backend.Services.BLL.Interfaces;
+using Backend.Services.BLL.Utilities.Interfaces;
 using Backend.Services.DAL.Interfaces;
-using Backend.Services.Other.Interfaces;
 
 namespace Backend.Services.BLL
 {
