@@ -1,7 +1,7 @@
 ﻿using Backend.EF.Context;
 using Backend.Models.Users;
 using Backend.Services.DAL.Interfaces;
-using Backend.Services.DAL.Utilities.Interfaces;
+using Backend.Services.Utilities.DAL.Interfaces;
 using Backend.Shared.AuthParams;
 
 namespace Backend.Services.DAL

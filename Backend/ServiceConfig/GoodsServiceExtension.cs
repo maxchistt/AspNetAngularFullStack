@@ -1,7 +1,7 @@
 ﻿using Backend.Services.DAL;
-using Backend.Services.DAL.Utilities;
-using Backend.Services.DAL.Utilities.Interfaces;
 using Backend.Services.DAL.Interfaces;
+using Backend.Services.Utilities.DAL;
+using Backend.Services.Utilities.DAL.Interfaces;
 
 namespace Backend.ServiceConfig
 {

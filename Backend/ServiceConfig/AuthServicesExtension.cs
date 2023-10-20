@@ -1,7 +1,7 @@
 ﻿using Backend.Services.BLL;
 using Backend.Services.BLL.Interfaces;
-using Backend.Services.BLL.Utilities;
-using Backend.Services.BLL.Utilities.Interfaces;
+using Backend.Services.Utilities.BLL;
+using Backend.Services.Utilities.BLL.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
