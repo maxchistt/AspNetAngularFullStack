@@ -1,7 +1,7 @@
 ﻿using Backend.DTOs.GoodsFiltering;
 using Backend.EF.Context;
 using Backend.Models.Goods;
-using Backend.Services.DAL.Auxiliary.Interfaces;
+using Backend.Services.DAL.Utilities.Interfaces;
 using Backend.Services.DAL.Interfaces;
 using Backend.Shared.Other;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,7 @@
 ﻿using Backend.Models.Goods;
 using System.Linq.Expressions;
 
-namespace Backend.Services.DAL.Auxiliary.Interfaces
+namespace Backend.Services.DAL.Utilities.Interfaces
 {
     public interface IProductOrderingExpressionParcer
     {

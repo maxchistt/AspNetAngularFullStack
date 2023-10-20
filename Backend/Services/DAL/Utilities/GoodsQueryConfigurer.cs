@@ -1,10 +1,10 @@
 ﻿using Backend.DTOs.GoodsFiltering;
 using Backend.EF.Extensions;
 using Backend.Models.Goods;
-using Backend.Services.DAL.Auxiliary.Interfaces;
+using Backend.Services.DAL.Utilities.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Services.DAL.Auxiliary
+namespace Backend.Services.DAL.Utilities
 {
     public class GoodsQueryConfigurer : IGoodsQueryConfigurer
     {

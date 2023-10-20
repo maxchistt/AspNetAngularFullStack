@@ -1,6 +1,6 @@
 ﻿using Backend.Services.DAL;
-using Backend.Services.DAL.Auxiliary;
-using Backend.Services.DAL.Auxiliary.Interfaces;
+using Backend.Services.DAL.Utilities;
+using Backend.Services.DAL.Utilities.Interfaces;
 using Backend.Services.DAL.Interfaces;
 
 namespace Backend.ServiceConfig
