@@ -1,6 +1,5 @@
 ﻿using Backend.DTOs.Goods;
 using Backend.DTOs.GoodsFiltering;
-using Backend.Endpoints.Goods.Utilities;
 using Backend.Models.Goods;
 using Backend.Services.DAL.Interfaces;
 using Backend.Shared.Other;
@@ -25,20 +24,20 @@ namespace Backend.Endpoints.Goods
                 .WithName("get product by id");
 
             // Get with filtring
-            builder.MapGet("/", GoodsQueryParams.Handler(async (GoodsQueryParamsDTO queryParams, IGoodsService goods) =>
+            builder.MapGet("/", async ([AsParameters] GoodsQueryParamsRequestDTO queryParams, IGoodsService goods) =>
             {
-                var notPaginatedRes = await goods.GetGoodsAsync(queryParams);
+                var notPaginatedRes = await goods.GetGoodsAsync((GoodsQueryParamsDTO)queryParams);
                 return Results.Json(notPaginatedRes.Select(p => (ProductDTO)p), statusCode: StatusCodes.Status200OK);
-            }))
+            })
                 .Produces<IEnumerable<ProductDTO>>()
                 .WithName("get goods with filter");
 
             // Get paginated with filtring
-            builder.MapGet("/paginated", GoodsQueryParams.Handler(async (GoodsQueryParamsDTO queryParams, IGoodsService goods) =>
+            builder.MapGet("/paginated", async ([AsParameters] GoodsQueryParamsRequestDTO queryParams, IGoodsService goods) =>
             {
-                var paginatedRes = await goods.GetPaginatedGoodsAsync(queryParams);
+                var paginatedRes = await goods.GetPaginatedGoodsAsync((GoodsQueryParamsDTO)queryParams);
                 return Results.Json(new PaginatedList<ProductDTO>(paginatedRes.Items.Select(p => (ProductDTO)p), paginatedRes.TotalItemsCount, paginatedRes.PageIndex, paginatedRes.PageSize), statusCode: StatusCodes.Status200OK);
-            }))
+            })
                 .Produces<PaginatedList<ProductDTO>>()
                 .WithName("get paginated goods with filter");
 
